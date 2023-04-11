@@ -77,7 +77,34 @@ router.post('/readDrive', (req, res) => {
     });
 });
 
-router.post('/fileUpload', (req, res) => {
+router.post('/readFolders', (req, res) => {
+    if (req.body.token == null) return res.status(400).send('Token not found');
+    oAuth2Client.setCredentials(req.body.token);
+    const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+    let parentID = 'root'
+    drive.files.list({
+        'q': `'${parentID}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+        'pageSize': 10,
+        'fields': "nextPageToken, files(id, name)"
+    }, (err, response) => {
+        if (err) {
+            console.log('The API returned an error: ' + err);
+            return res.status(400).send(err);
+        }
+        const files = response.data.files;
+        if (files.length) {
+            console.log('Files:');
+            files.map((file) => {
+                console.log(`${file.name} (${file.id})`);
+            });
+        } else {
+            console.log('No files found.');
+        }
+        res.send(files);
+    });
+});
+
+router.post('/uploadFile', (req, res) => {
     var form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         if (err) return res.status(400).send(err);
