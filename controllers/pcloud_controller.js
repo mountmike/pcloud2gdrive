@@ -4,54 +4,37 @@ const router = express.Router();
 const fs = require("fs")
 const axios = require("axios")
 const pCloudSdk = require('pcloud-sdk-js')
-global.location = 1;
+global.locationid = 1;
 
 router.get("/authURL", (req, res, next) => {
     res.redirect(`https://my.pcloud.com/oauth2/authorize?redirect_uri=${config.pCloudAPI.redirectURI}&client_id=${config.pCloudAPI.clientId}&response_type=code`)
 })
 
-router.get("/get-token", (req, res, next) => {
-  if (req.query.code) {
-    req.session.pCloud = req.query
+router.get("/auth-token", (req, res, next) => {
+  const { code } = req.query
+  pCloudSdk.oauth.getTokenFromCode(code, config.pCloudAPI.clientId, config.pCloudAPI.appSecret)
+  .then(resp => {
+    req.session.pCloud = resp
     res.send("success")
+  })
+});
+
+router.get('/folders/:folderId', async (req, res, next) => {
+  const { folderId } = req.params
+  try {
+    const client = pCloudSdk.createClient(req.session.pCloud.access_token)
+    const folders = await client.listfolder(Number(folderId))
+    res.json(folders.contents)
+  } catch (err) {
+    next(err)
   }
-});
+  
+  // return folders.contents.map(file => file.fileid)
 
-router.post('/readFolders', (req, res) => {
-    const client = pcloudSdk.createClient(token.pcloud.access_token);
-    client.listfolder(0).then((fileMetadata) => {
-        res.send(fileMetadata)
-      });
-});
-
-router.post('/uploadFile', (req, res) => {
-    var form = new formidable.IncomingForm();
-
-    form.parse(req, (err, fields, files) => {
-        if (err) return res.status(400).send(err);
-
-        const media = {
-            mimeType: files.file.type,
-            body: fs.createReadStream(files.file.filepath),
-        };
-        const client = pcloudSdk.createClient(token.pcloud.access_token);
-
-        client.upload(files.file.filepath, 0, {
-            onBegin: () => {
-              console.log('started');
-            },
-            onProgress: function(progress) {
-              console.log(progress.loaded, progress.total);
-            },
-            onFinish: function(fileMetadata) {
-              console.log('finished', fileMetadata);
-              fileMetadata.name = "filename.jpg"
-              res.send('Successful')
-            }
-          }).catch(function(error) {
-            console.error(error);
-        })      
-    }) 
+  // const client = pcloudSdk.createClient(token.pcloud.access_token);
+  // client.listfolder(0).then((fileMetadata) => {
+  //     res.send(fileMetadata)
+  //   });
 });
 
 router.post("/downloadFile/:id", (req, res) => {

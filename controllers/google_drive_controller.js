@@ -1,13 +1,12 @@
 const config = require("../config")
 const express = require("express");
 const router = express.Router();
-const formidable = require("formidable")
 const fs = require("fs")
 const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.clientId,
     config.gDriveAPI.clientSecret,
-    "http://localhost:8080/gdrive/get-token"
+    config.gDriveAPI.redirectURI
   )
 
 const SCOPE = ["https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.file"]
@@ -28,8 +27,7 @@ router.get("/authURL", (req, res, next) => {
     res.redirect(authUrl)
 })
 
-router.get("/get-token", (req, res) => {
-    // if (req.body === null) return res.status(400).send('invalid request')
+router.get("/auth-token", (req, res) => {
     oAuth2Client.getToken(req.query.code, (err, token) => {
         if (err) {
             console.log("Error receiving your token", err);
@@ -41,7 +39,7 @@ router.get("/get-token", (req, res) => {
     })
 })
 
-router.post('/getUserInfo', (req, res) => {
+router.post('/user-info', (req, res) => {
     if (req.body.token == null) return res.status(400).send('Token not found');
     oAuth2Client.setCredentials(req.body.token);
     const oauth2 = google.oauth2({ version: 'v2', auth: oAuth2Client });
@@ -53,7 +51,7 @@ router.post('/getUserInfo', (req, res) => {
     })
 });
 
-router.post('/readDrive', (req, res) => {
+router.post('/read-files', (req, res) => {
     if (req.body.token == null) return res.status(400).send('Token not found');
     oAuth2Client.setCredentials(req.body.token);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });
@@ -77,7 +75,7 @@ router.post('/readDrive', (req, res) => {
     });
 });
 
-router.post('/readFolders', (req, res) => {
+router.post('/read-folders', (req, res) => {
     if (req.body.token == null) return res.status(400).send('Token not found');
     oAuth2Client.setCredentials(req.body.token);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });
@@ -104,8 +102,8 @@ router.post('/readFolders', (req, res) => {
     });
 });
 
-router.post('/uploadFile', (req, res) => {
-    var form = new formidable.IncomingForm();
+router.post('/upload-file', (req, res) => {
+    // var form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         if (err) return res.status(400).send(err);
         const token = JSON.parse(fields.token);
@@ -143,7 +141,7 @@ router.post('/uploadFile', (req, res) => {
     });
 });
 
-router.post('/deleteFile/:id', (req, res) => {
+router.post('/delete-file/:id', (req, res) => {
     if (req.body.token == null) return res.status(400).send('Token not found');
     oAuth2Client.setCredentials(req.body.token);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });
@@ -151,7 +149,7 @@ router.post('/deleteFile/:id', (req, res) => {
     drive.files.delete({ 'fileId': fileId }).then((response) => { res.send(response.data) })
 });
 
-router.post('/download/:id', (req, res) => {
+router.post('/download-file/:id', (req, res) => {
     if (req.body.token == null) return res.status(400).send('Token not found');
     oAuth2Client.setCredentials(req.body.token);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });

@@ -1,7 +1,6 @@
 const config = require("../config")
-
+const axios = require("axios")
 const pcloudSdk = require('pcloud-sdk-js')
-const token = require("../tmp/tokens")
 const fs = require("fs")
 const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
@@ -12,10 +11,19 @@ const oAuth2Client = new google.auth.OAuth2(
 global.locationid = 1;
 
 async function getFileList(folderId) {
-    const client = pcloudSdk.createClient(token.pcloud.access_token);
+    const client = pcloudSdk.createClient("7M6F7Z8S42o7ZUFbW3uHpMj5sLhOq1MOJjS45VQ0k");
     const folders = await client.listfolder(folderId)
     return folders.contents.map(file => file.fileid)
 }
+
+
+async function getFileList2(folderId) {
+    const client = pcloudSdk.createClient("7M6F7Z8S42o7ZUFbW3uHpMj5sLhOq1MOJjS45VQ0k");
+    client.listfolder(folderId).then(res => console.log(res))
+}
+
+getFileList2(0)
+
 
 async function transferFile(fileId, targetFolderId) {
     try { // connect to pCloud and download file
@@ -72,7 +80,7 @@ async function transferFolder(originFolderId, destinationFolderId) {
     fileList.forEach(fileId => transferFile(fileId, destinationFolderId))
 }
 
-transferFolder(testOriginFolderId, testDestinationFolderId)
+// transferFolder(testOriginFolderId, testDestinationFolderId)
 
 
 
