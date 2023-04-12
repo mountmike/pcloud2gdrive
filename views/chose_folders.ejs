@@ -1,0 +1,27 @@
+<form class="folders" action="/build-task" method="post">
+    <input type="hidden" name="_method" value="post">
+    <div class="pcloud-folders">
+        <h2>Origin</h2>
+        <p>Pcloud Drive</p>
+        <% for (const folder of pCloudFolders) { %>
+        <div class="folder">
+            <input type="radio" value="<%= folder.id %>" name="originFolderSelection">
+            <img class="folder-icon" src="/images/folder.png" alt="">
+            <h4><%= folder.name %></h4>
+        </div>
+        <% } %>
+    </div>
+    <div class="gdrive-folders">
+        <h2>Destination</h2>
+        <p>Google Drive</p>
+        <% for (const folder of gDriveFolders) { %>
+        <div class="folder">
+            <input type="radio" value="<%= folder.id %>" name="destinationFolderSelection">
+            <img class="folder-icon" src="/images/folder.png" alt="">
+            <h4><%= folder.name %></h4>
+        </div>
+        <% } %>
+    </div>
+    <button>next</button>
+</form>
+

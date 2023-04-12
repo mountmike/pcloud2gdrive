@@ -2,10 +2,15 @@ const express = require("express")
 const app = express()
 const config = require("./config")
 const cors = require("cors")
+const session = require('express-session');
+const db = require("./db");
 const pgSession = require('connect-pg-simple')(session);
 
+const userController = require("./controllers/user_controller")
+const sessionController = require("./controllers/session_controller")
 const gDriveController = require("./controllers/google_drive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
+
 const Pcloud = require("./models/pcloud_model.js")
 const Gdrive = require("./models/gdrive_model.js")
 
@@ -18,13 +23,32 @@ app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(require("./middlewares/method_override"))
+app.use(session({
+  store: new pgSession({
+    pool : db,                // Connection pool
+    tableName: "session"
+  }),
+  secret: process.env.SESSION_SECRET || "godogsgo",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+  // Insert express-session options here
+}));
 
+app.use("/user", userController)
+app.use("/session", sessionController)
 app.use("/gdrive", gDriveController)
 app.use("/pcloud", pCloudController)
 
 app.get("/", (req, res) => {
-  res.render('home')
-})
+  res.render("login");
+});
+
+app.get("/app", (req, res) => {
+  console.log(req.session);
+  res.render("app");
+});
+
 
 app.get("/chose-folders", (req, res) => {
   let pCloudFolders;

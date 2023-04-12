@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pcloud to Gdrive</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="module" src="/client.js" defer></script>
+    <script type="text/javascript" src="https://unpkg.com/pcloud-sdk-js@latest/dist/pcloudsdk.js"></script>
+    <script type="module" src="/components/oauth.js" defer></script>
+</head>
+<body>
+    <main>
+        <h1>app</h1>
+        <div class="folders">
+            <div class="pcloud-folders">
+                <button id="authorisePcloudBtn">Get pCloud Token</button>
+            </div>
+            <div class="gdrive-folders">
+                <button id="authoriseGdriveBtn">Get Gdrive Token</button>
+            </div>
+        </div>
+        
+    </main>
+</body>
+</html>

@@ -7,7 +7,7 @@ const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.clientId,
     config.gDriveAPI.clientSecret,
-    config.gDriveAPI.redirectURI
+    "http://localhost:8080/gdrive/get-token"
   )
 
 const SCOPE = ["https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.file"]
@@ -20,23 +20,23 @@ router.get("/", (req, res, next) => {
     }
 })
 
-router.get("/getAuthURL", (req, res, next) => {
+router.get("/authURL", (req, res, next) => {
     const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: SCOPE,
     })
-    console.log(authUrl)
-    return res.send(authUrl)
+    res.redirect(authUrl)
 })
 
-router.post("/getToken", (req, res) => {
-    if (req.body === null) return res.status(400).send('invalid request')
-    oAuth2Client.getToken(req.body.code, (err, token) => {
+router.get("/get-token", (req, res) => {
+    // if (req.body === null) return res.status(400).send('invalid request')
+    oAuth2Client.getToken(req.query.code, (err, token) => {
         if (err) {
             console.log("Error receiving your token", err);
             return res.status(400).send('Error receiving your token')
         } else {
-            res.send(token)
+            req.session.Gdrive = token
+            res.send("success")
         }
     })
 })

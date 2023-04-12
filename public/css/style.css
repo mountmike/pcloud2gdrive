@@ -6,6 +6,17 @@ body {
     align-items: center;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
 .folders {
     display: flex;
     gap: 10rem;
