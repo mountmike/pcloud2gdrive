@@ -14,14 +14,15 @@ body {
 
 header {
     display: flex;
-    height: 5rem;
+    height: 3rem;
     width: 100%;
     background: #e0e0e0;
 }
 
 nav {
     display: flex;
-    height: 5rem;
+    align-items: center;
+    height: 2.5rem;
     width: 100%;
     background: #e0e0e0;
     box-shadow: inset -28px -28px 56px #acacac,
@@ -41,6 +42,9 @@ main {
 }
 
 aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 15%;
     height: 100%;
     background: #e0e0e0;
@@ -63,7 +67,7 @@ section {
 
 .folders {
     display: flex;
-    gap: 10rem;
+    gap: 2rem;
 }
 
 .folder {
@@ -79,4 +83,12 @@ section {
 .folder-icon {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+h1 {
+    margin: 0;
+}
+
+h2 {
+    margin: 0;
 }

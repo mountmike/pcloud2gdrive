@@ -22,7 +22,7 @@ function handleAddTransferBtn(e) {
 
 const pcloudWrapper = document.querySelector(".pcloud-wrapper")
 const gdriveWrapper = document.querySelector(".gdrive-wrapper")
-const nextBtn = document.querySelector("#nextBtn")
+const startTransferBtn = document.querySelector("#startTransferBtn")
 
 // pcloudWrapper.addEventListener('click', handleOriginFolderSelection)
 // gdriveWrapper.addEventListener('click', handleDestinationFolderSelection)
@@ -35,7 +35,7 @@ function handleOriginFolderSelection(e) {
         return
     }
     originFolderSelection = e.target.value
-    if (originFolderSelection && destinationFolderSelection) nextBtn.disabled = false
+    if (originFolderSelection && destinationFolderSelection) startTransferBtn.disabled = false
 
 }
 
@@ -44,7 +44,7 @@ function handleDestinationFolderSelection(e) {
         return
     }
     destinationFolderSelection = e.target.value
-    if (originFolderSelection && destinationFolderSelection) nextBtn.disabled = false
+    if (originFolderSelection && destinationFolderSelection) startTransferBtn.disabled = false
 }
 
 
