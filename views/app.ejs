@@ -9,24 +9,40 @@
     <script type="module" src="/client.js" defer></script>
     <script type="module" src="/components/pcloud_component.js" defer></script>
     <script type="module" src="/components/gdrive_component.js" defer></script>
+    <script type="module" src="/components/add_transfer_component.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 </head>
 <body>
+    <header>
+        <h1>pcloud2gdrive</h1>
+    </header>
+    <nav>
+        <div class="nav-spacer"></div>
+        <div class="main-nav">
+            <button id="taskListBtn">task list</button>
+            <button id="addTransferBtn">add transfer</button>
+        </div>
+    </nav>
     <main>
-        <h1>app</h1>
-        <section class="folders">
-            <div class="pcloud-wrapper">
-                <h2>Origin</h2>
-                <p>Pcloud Drive</p>
-                <div class="pcloud-folders"></div>
-            </div> 
-            <div class="gdrive-wrapper">
-                <h2>Destination</h2>
-                <p>Google Drive</p>
-                <div class="gdrive-folders"></div>
-            </div>
-        </section>
-        <button>next</button>
+        <aside>
+            <button id="authorisePcloudBtn">Get pCloud Token</button>
+            <button id="authoriseGdriveBtn">Get Gdrive Token</button>
+        </aside>
+        <div class="app">
+            <!-- <section class="folders">
+                <div class="pcloud-wrapper">
+                    <h2>Origin</h2>
+                    <p>Pcloud Drive</p>
+                    <div class="pcloud-folders"></div>
+                </div>
+                <div class="gdrive-wrapper">
+                    <h2>Destination</h2>
+                    <p>Google Drive</p>
+                    <div class="gdrive-folders"></div>
+                </div>
+            </section>
+            <button disabled id="nextBtn">next</button> -->
+        </div>
     </main>
 </body>
 </html>
