@@ -24,7 +24,7 @@ router.get('/folders/:folderId', async (req, res, next) => {
   try {
     const client = pCloudSdk.createClient(req.session.pCloud.access_token)
     const folders = await client.listfolder(Number(folderId))
-    res.json(folders.contents)
+    res.json(folders)
   } catch (err) {
     next(err)
   }

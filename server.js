@@ -8,7 +8,7 @@ const pgSession = require('connect-pg-simple')(session);
 
 const userController = require("./controllers/user_controller")
 const sessionController = require("./controllers/session_controller")
-const gDriveController = require("./controllers/google_drive_controller")
+const gDriveController = require("./controllers/gdrive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
 
 const Pcloud = require("./models/pcloud_model.js")
