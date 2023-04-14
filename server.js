@@ -1,9 +1,9 @@
 const express = require("express")
 const app = express()
 const config = require("./config")
-const cors = require("cors")
-const session = require('express-session');
 const db = require("./db");
+const cors = require("cors")
+const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session);
 
 const userController = require("./controllers/user_controller")
@@ -12,9 +12,8 @@ const gDriveController = require("./controllers/gdrive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
 const taskController = require("./controllers/task_controller")
 
-const Pcloud = require("./models/pcloud_model.js")
-const Gdrive = require("./models/gdrive_model.js")
-
+// const Pcloud = require("./models/pcloud_model.js")
+// const Gdrive = require("./models/gdrive_model.js")
 
 app.set("view engine", "ejs")
 
@@ -56,26 +55,20 @@ app.get("/add-cloud", (req, res) => {
 });
 
 
-app.get("/chose-folders", (req, res) => {
-  let pCloudFolders;
-  let gDriveFolders;
-  Pcloud.listRootFolder()
-  .then(folders => {
-    pCloudFolders = folders
-    return Gdrive.listRootFolder()
-  })
-  .then(folders => {
-    gDriveFolders = folders
-    res.render("chose_folder", { pCloudFolders, gDriveFolders })
-  })
-})
+// app.get("/chose-folders", (req, res) => {
+//   let pCloudFolders;
+//   let gDriveFolders;
+//   Pcloud.listRootFolder()
+//   .then(folders => {
+//     pCloudFolders = folders
+//     return Gdrive.listRootFolder()
+//   })
+//   .then(folders => {
+//     gDriveFolders = folders
+//     res.render("chose_folder", { pCloudFolders, gDriveFolders })
+//   })
+// })
 
-app.post("/build-task", (req, res) => {
-  const {originFolderSelection, destinationFolderSelection} = req.body
-  
-
-  res.render("build_task")
-})
 
 app.listen(config.port, () => {
   console.log(`listening on port ${config.port}`)

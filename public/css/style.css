@@ -85,6 +85,16 @@ section {
     height: 1.5rem;
 }
 
+.task {
+    display: flex;
+}
+
+.task > p {
+    display: inline;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
 h1 {
     margin: 0;
 }

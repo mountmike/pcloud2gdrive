@@ -1,10 +1,22 @@
-const axios = require("axios")
+const config = require("../config")
+const pCloudSdk = require('pcloud-sdk-js')
+global.locationid = 1;
 
 class Pcloud {
 
-    static listRootFolder() {
-        return axios.post(`https://api.pcloud.com/listfolder?username=micktharratt@hotmail.com&password=08Ooz9ZyWr6X&folderid=0`)
-        .then(res => res.data.metadata.contents.filter(folder => folder.isfolder))
+    static async listFolder(folderId, token) {
+        const client = pCloudSdk.createClient(token)
+        const contents = await client.listfolder(Number(folderId))
+        return contents
+    }
+
+    static getToken(code) {
+        return pCloudSdk.oauth.getTokenFromCode(code, config.pCloudAPI.clientId, config.pCloudAPI.appSecret)
+    }
+
+    static downloadFile(fileId, target, token) {
+        const client = pCloudSdk.createClient(token)
+        return client.downloadfile(fileId, target)
     }
 }
 
