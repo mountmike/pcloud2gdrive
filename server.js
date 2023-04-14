@@ -10,6 +10,7 @@ const userController = require("./controllers/user_controller")
 const sessionController = require("./controllers/session_controller")
 const gDriveController = require("./controllers/gdrive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
+const taskController = require("./controllers/task_controller")
 
 const Pcloud = require("./models/pcloud_model.js")
 const Gdrive = require("./models/gdrive_model.js")
@@ -38,6 +39,7 @@ app.use("/user", userController)
 app.use("/session", sessionController)
 app.use("/gdrive", gDriveController)
 app.use("/pcloud", pCloudController)
+app.use("/task", taskController)
 
 app.get("/", (req, res) => {
   res.render("login");

@@ -4,7 +4,7 @@ export default function renderAddTransferPage() {
             <h2>Transfer accross from PCloud to Google Drive</h2>
             <div class="task-name-wrapper">
                 <label for="taskName">Task name:</label>
-                <input type="text" name="taskName" value="new task">
+                <input id="taskNameInput" type="text" name="taskName" value="new task">
             </div>
         </div>
         <section class="folders">
