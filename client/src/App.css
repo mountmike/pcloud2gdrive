@@ -1,0 +1,46 @@
+/* * {
+  border: red 1px solid;
+} */
+
+
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-header {
+  height: 5rem;
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1%;
+}
+
+.task-nav-wrapper {
+  display: flex;
+  width: 100%;
+  height: 5rem;
+  background: #e0e0e0;
+  box-shadow: inset -12px -12px 24px #bebebe,
+              inset 12px 12px 24px #ffffff;
+}
+
+.bottom-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  background-color: #e0e0e0;
+}
+
+.main-page-wrapper {
+  width: 85%;
+}
+

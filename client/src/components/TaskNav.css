@@ -1,0 +1,22 @@
+.spacer {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    width: 85%;
+    display: flex;
+    align-items: stretch;
+    padding:  0;
+}
+
+nav > button {
+    width: 5rem;
+    
+}
+
+nav > button:hover {
+    background-color: rgb(99, 99, 136);
+}

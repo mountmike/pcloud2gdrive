@@ -12,9 +12,6 @@ const gDriveController = require("./controllers/gdrive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
 const taskController = require("./controllers/task_controller")
 
-// const Pcloud = require("./models/pcloud_model.js")
-// const Gdrive = require("./models/gdrive_model.js")
-
 app.set("view engine", "ejs")
 
 app.use(express.json())
