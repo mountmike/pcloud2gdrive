@@ -2,12 +2,19 @@
   border: red 1px solid;
 } */
 
-
+/*
+dark green: #042A2B
+Moonstone: #5EB1BF
+Light cyan: #CDEDF6
+orange: #EF7B45
+Chilli: #D84727
+*/
 
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  color: #042A2B;
 }
 
 .main-header {
@@ -16,7 +23,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1%;
 }
 
 .task-nav-wrapper {
@@ -44,3 +50,15 @@ aside {
   width: 85%;
 }
 
+.spacer {
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}

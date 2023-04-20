@@ -1,9 +1,7 @@
 import './App.css';
 import LoginPage from './pages/LoginPage'
-import Header from './components/Header'
-import TaskNav from './components/TaskNav'
-import Aside from './components/Aside'
-import MainPage from './pages/MainPage'
+import HomePage from './pages/HomePage'
+
 import { useState } from 'react';
 
 
@@ -12,12 +10,11 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <TaskNav />
-      <section className="bottom-wrapper">
-        <Aside />
-        <MainPage />
-      </section>
+      { user ?
+      <HomePage user={user}/>
+      :
+      <LoginPage onLogin={setUser}/> 
+      }
     </div>
   );
 }

@@ -1,0 +1,41 @@
+.add-cloud-page {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-cloud-page > h3 {
+    margin: 1% 0 0 1%;
+}
+
+.add-cloud-page > p {
+    margin: 5px 0 0 1%;
+    font-weight: 300;
+}
+
+.btn-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 5%;
+    margin-top: 5rem;
+}
+
+.btn-wrapper > button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 10px;
+}
+
+.btn-wrapper > button:hover {
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    cursor: pointer;
+}
+
+.cloud-logo-img {
+    width: 6rem;
+}
