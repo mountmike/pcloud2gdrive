@@ -22,6 +22,7 @@
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
     "googleapis": "^114.0.0",
+    "jsonwebtoken": "^9.0.0",
     "method-override": "^3.0.0",
     "pcloud-sdk-js": "^2.0.0",
     "pg": "^8.10.0"

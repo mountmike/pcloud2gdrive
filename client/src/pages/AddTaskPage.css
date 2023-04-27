@@ -1,0 +1,30 @@
+.add-task-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.add-task-page > h3 {
+    margin: 1% 0 0 1%;
+}
+
+.add-task-page > p {
+    margin: 5px 0 0 1%;
+    font-weight: 300;
+}
+
+.folder-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 2%;
+}
+
+.folder-browser {
+    width: 40%;
+    height: 80%;
+    background-color: #cdedf68b;
+    border-radius: 10px;
+}
+

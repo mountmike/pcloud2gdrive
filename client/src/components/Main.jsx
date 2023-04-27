@@ -1,6 +1,6 @@
-import AddCloudPage from '../pages/sub_pages/AddCloudPage'
-import AddTaskPage from '../pages/sub_pages/AddTaskPage'
-import CurrentTasksPage from '../pages/sub_pages/CurrentTasksPage'
+import AddCloudPage from '../pages/AddCloudPage'
+import AddTaskPage from '../pages/AddTaskPage'
+import CurrentTasksPage from '../pages/CurrentTasksPage'
 import { Routes, Route } from "react-router-dom";
 
 

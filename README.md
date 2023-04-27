@@ -12,6 +12,8 @@ Presenting **pcloud2gdrive:** a tool for migrating data from Pcloud Drive to Goo
 
 Live demo: *insert link*
 
+Screenshot: *insert link*
+
 # Planning
 ### Testing the concept
 After messing around with the Gdrive & Pcloud APIs in NODE, I was able to make a function that copied files from an origin cloud folder to a destination cloud folder via the /tmp folder. This left me feeling optimistic so I began imagining a GUI.
@@ -22,4 +24,5 @@ After messing around with the Gdrive & Pcloud APIs in NODE, I was able to make a
 ![Screenshot of add task page wireframe](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Addtaskpage.png)
 
 ## Basic architecture
+Originally I set up an EXPRESS.js server and PostgreSQL db to handle all the backend but after messing around with Firebase on another project I decided to also implement some Firebase features into my backend.
 ![Diagram of app architecture](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/architecture.png)

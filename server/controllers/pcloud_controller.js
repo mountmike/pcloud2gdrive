@@ -19,6 +19,7 @@ router.get("/auth-token", (req, res, next) => {
 });
 
 router.get("/checksession", (req, res) => {
+  console.log(req.session);
   res.json(req.session.pCloud)
 })
 

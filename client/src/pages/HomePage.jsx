@@ -17,12 +17,12 @@ const defaultPageState = [
 ]
 
 
-function HomePage({ user }) {
+function HomePage({ user, onLogout }) {
   const [currentPage, setCurrentPage] = useState(defaultPageState)
 
   return (
     <div className="App">
-      <Header user={user}/>
+      <Header user={user} onLogout={onLogout} />
       <TaskNav setCurrentPage={setCurrentPage} />
       <section className="bottom-wrapper">
         <Aside setCurrentPage={setCurrentPage} />

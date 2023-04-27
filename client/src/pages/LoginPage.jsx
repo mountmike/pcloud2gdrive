@@ -1,14 +1,25 @@
 import { useState } from "react"
+import { login as usersApiLogin } from '../utils/users_api'
 
 export default function LoginPage({ onLogin }) {
-    const [formData, setFormData] = useState({ username: null, password: null })
+    const [formData, setFormData] = useState({ email: null, password: null })
     const [error, setError] = useState("")
 
     const handleSubmit = e => {
         e.preventDefault()
 
-        if (formData.username && formData.password) {
-            onLogin(formData)
+        if (formData.email && formData.password) {
+            usersApiLogin(formData)
+            .then(token => {
+              localStorage.setItem("token", token)
+    
+              // save the token somewhere in the client
+              // local storage
+    
+              // set user state
+              onLogin(formData)
+            })
+            .catch(err => console.log(err))
         } else {
             setError("invalid username or password!")
         }
@@ -27,8 +38,8 @@ export default function LoginPage({ onLogin }) {
             <h1>login</h1>
 
             <form onChange={handleChange} onSubmit={handleSubmit}>
-                <label>username</label>
-                <input name="username" type="text" />
+                <label>email</label>
+                <input name="email" type="text" />
                 <label>password</label>
                 <input name="password" type="password" />
                 <button>login</button>

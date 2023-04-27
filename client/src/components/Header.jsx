@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 
-function Header({ user }) {
+function Header({ user, onLogout }) {
     return (
         <header className="main-header">
             <div className="spacer">
@@ -17,7 +17,7 @@ function Header({ user }) {
                     <header>
                         <p>{user.username}</p>
                     </header>
-                    <button>logout</button>
+                    <button onClick={onLogout}>logout</button>
                 </div>
             </div>
         </header>

@@ -10,7 +10,8 @@ export default function Aside() {
     const [isPcloudConnected, setIsPcloudConnected] = useState(false)
 
     useEffect(() => {
-        axios.get("http://localhost:8080/pcloud/checksession").then(res => console.log(res))
+        axios.get("http://localhost:8080/api/pcloud/checksession")
+            .then(res => console.log(res))
     }, [])
 
     return (

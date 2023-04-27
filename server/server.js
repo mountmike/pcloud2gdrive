@@ -19,6 +19,7 @@ app.use(cors({origin: "http://localhost:3000", credentials: true}))
 app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }))
 app.use(require("./middlewares/method_override"))
+app.use(require("./middlewares/check_tokens"))
 app.use(session({
   store: new pgSession({
     pool : db,                // Connection pool
@@ -31,11 +32,11 @@ app.use(session({
   // Insert express-session options here
 }));
 
-app.use("/user", userController)
-app.use("/session", sessionController)
-app.use("/gdrive", gDriveController)
-app.use("/pcloud", pCloudController)
-app.use("/task", taskController)
+app.use("/api/user", userController)
+app.use("/api/session", sessionController)
+app.use("/api/gdrive", gDriveController)
+app.use("/api/pcloud", pCloudController)
+app.use("/api/task", taskController)
 
 app.get("/", (req, res) => {
   res.render("login");
