@@ -18,6 +18,10 @@ router.get("/auth-token", (req, res, next) => {
   })
 });
 
+router.get("/checksession", (req, res) => {
+  res.json(req.session.pCloud)
+})
+
 router.get('/folder/:folderId', async (req, res, next) => {
   const { folderId } = req.params
   const token = req.session.pCloud.access_token
@@ -28,6 +32,8 @@ router.get('/folder/:folderId', async (req, res, next) => {
     next(err)
   }
 });
+
+
 
 
 
