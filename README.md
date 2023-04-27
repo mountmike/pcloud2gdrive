@@ -17,4 +17,4 @@ Live demo: *insert link*
 After messing around with the Gdrive & Pcloud APIs in NODE, I was able to make a function that copied files from an origin cloud folder to a destination cloud folder via the /tmp folder. This left me feeling optimistic so I began imagining a GUI.
 
 ## UI Wireframe
-![Screenshot](https://github.com/mountmike/pcloud2gdrive/blob/main/public/images/planning/Mainwireframe.png)
+![Screenshot](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Mainwireframe.png)
