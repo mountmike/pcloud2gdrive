@@ -18,7 +18,7 @@ After messing around with the Gdrive & Pcloud APIs in NODE, I was able to make a
 
 ## UI Wireframe
 ![Screenshot of main app wireframe](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Mainwireframe.png)
-![Screenshot of current tasks page wireframe](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Currenttaskpage.png)
+![Screenshot of current tasks page wireframe](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Currenttaskspage.png)
 ![Screenshot of add task page wireframe](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/Addtaskpage.png)
 
 ## Basic architecture
