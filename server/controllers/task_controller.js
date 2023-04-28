@@ -18,7 +18,7 @@ router.get("/", (req, res, next) => {
 })
 
 router.post("/", async (req, res, next) => {
-    console.log(req.body);
+    Task.create(req.body)
 })
 
 // router.post("/", async (req, res, next) => {
