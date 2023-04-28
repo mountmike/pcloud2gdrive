@@ -31,7 +31,7 @@ function Folders({ parentFolder, setTargetId, drive }) {
     };
 
     const handleSelection = (e) => {
-      drive === "pcloud" ? setTargetId(e.target.value.slice(1)) : setTargetId(e.target.value)
+      setTargetId(e.target.value)
       
     }
 
@@ -56,7 +56,7 @@ function Folders({ parentFolder, setTargetId, drive }) {
             folderList.folders?.map((child) => {
               return (
                 <div style={{ paddingLeft: 10 }}>
-                  <Folders parentFolder={{name: child.name, id: child.id}} key={child.folderid} setTargetId={setTargetId} drive={drive} />
+                  <Folders parentFolder={{name: child.name, id: drive === "gdrive" ? child.id : child.folderid}} key={child.folderid} setTargetId={setTargetId} drive={drive} />
                 </div>
               );
             })

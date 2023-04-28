@@ -14,7 +14,7 @@ router.get("/auth-token", (req, res, next) => {
   Pcloud.getToken(code)
   .then(resp => {
     req.session.pCloud = resp
-    res.send("success")
+    res.send("<script>window.close();</script > ")
   })
 });
 

@@ -9,7 +9,7 @@ const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.redirectURI
   )
 
-const SCOPE = ["https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.file"]
+const SCOPE = ["https://www.googleapis.com/auth/drive"]
 
 router.get("/", (req, res, next) => {
     try {
@@ -24,6 +24,7 @@ router.get("/authURL", (req, res, next) => {
         access_type: 'offline',
         scope: SCOPE,
     })
+    console.log(authUrl);
     res.redirect(authUrl)
 })
 
@@ -80,7 +81,7 @@ router.get('/folders/:folderId', (req, res) => {
     oAuth2Client.setCredentials(req.session.Gdrive);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });
     drive.files.list({
-        q: `mimeType='application/vnd.google-apps.folder' and 'root' in parents`,
+        q: `mimeType='application/vnd.google-apps.folder' and '${folderId}' in parents`,
         fields: 'nextPageToken, files(id, name)',
         spaces: 'drive',
     }, (err, response) => {
