@@ -18,7 +18,13 @@ router.post("/", async (req, res, next) => {
     
         if (!match) throw new Error("invalid email or password")
     
-        let token = createJsonWebToken({ uid: user.id, username: user.username, email: user.email})
+        let token = createJsonWebToken({ 
+          uid: user.id, 
+          username: user.username, 
+          email: user.email, 
+          hasPcloud: req.session.pCloud ? true : false, 
+          hasGdrive: req.session.Gdrive ? true : false
+        })
         req.session.userId = user.id
         res.json(token)
       } catch (err) {

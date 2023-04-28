@@ -21,7 +21,7 @@ export default function AddCloudPage() {
             const left = window.screenX + (window.outerWidth - width) / 2;
             const top = window.screenY + (window.outerHeight - height) / 2.5;
             const title = `CONNECT TO GDRIVE`;
-            const url = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https://www.googleapis.com/auth/drive&response_type=code&client_id=${process.env.REACT_APP_GDRIVE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GDRIVE_REDIRECT_URI}`
+            const url = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https://www.googleapis.com/auth/drive&response_type=code&client_id=${process.env.REACT_APP_GDRIVE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GDRIVE_REDIRECT_URI}&approval_prompt=force`
             const popup = window.open(url, title, `width=${width},height=${height},left=${left},top=${top}`);
             setExternalPopup(popup);
         }

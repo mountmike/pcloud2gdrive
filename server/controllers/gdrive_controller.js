@@ -1,3 +1,4 @@
+require('datejs')
 const config = require("../config")
 const express = require("express");
 const router = express.Router();
@@ -19,12 +20,12 @@ router.get("/", (req, res, next) => {
     }
 })
 
+
 router.get("/authURL", (req, res, next) => {
     const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: SCOPE,
     })
-    console.log(authUrl);
     res.redirect(authUrl)
 })
 
@@ -34,7 +35,9 @@ router.get("/auth-token", (req, res) => {
             console.log("Error receiving your token", err);
             return res.status(400).send('Error receiving your token')
         } else {
+            console.log(token);
             req.session.Gdrive = token
+            oAuth2Client.setCredentials(req.session.Gdrive)
             res.send("success")
         }
     })
@@ -76,8 +79,14 @@ router.post('/read-files', (req, res) => {
     });
 });
 
+// ya29.a0Ael9sCMAuqomicOmja8JHewxVvgMWYS4sby1b1lnZk2jylpdoLlWO73k_uFG8Urp4GD-9sR5Q1vbcQ90Pmo5PXPVp4ZjAS3EQnkaX2OCK9xtkTc6bu2RAN_kww_VMi3YNPEpL00xTGBZtjtCuYv5ZzFfKLgsaCgYKAQYSARESFQF4udJhph0IJRAzIQ81DSyoYN2ArQ0163
+
 router.get('/folders/:folderId', (req, res) => {
     let { folderId }  = req.params
+
+    let refresh = '1//0gj5E7MKPVAL4CgYIARAAGBASNwF-L9IrwsOQEoJV9nP-0bIQFb9zJgOtizj7Rgx57cUbhYv1YcQUP4H2ytvP0_sKof3sB0xM_vQ'
+
+
     oAuth2Client.setCredentials(req.session.Gdrive);
     const drive = google.drive({ version: 'v3', auth: oAuth2Client });
     drive.files.list({

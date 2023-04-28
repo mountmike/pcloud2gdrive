@@ -4,43 +4,46 @@
     height: 100%;
 }
 
-.add-task-page > h3 {
-    margin: 1% 0 0 1%;
-}
-
-.add-task-page > p {
-    margin: 5px 0 0 1%;
-    font-weight: 300;
-}
-
-.task-name-wrapper {
-    margin: 1% 0 0 1%;
+main > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 1%;
+    height: 15%;
 }
 
 .folders-wrapper {
     display: flex;
     justify-content: center;
-    height: 100%;
+    height: 85%;
     width: 100%;
     gap: 2%;
     margin-top: 2rem;
 }
 
-.folder-browser {
-    height: 80%;
-}
 
-.origin-wrapper {
-    width: 50%;
-    overflow-y: scroll;
-}
-
-.target-wrapper {
-    width: 50%;
+.origin-wrapper, .target-wrapper {
+    width: 45%;
+    max-height: 60vh;
     overflow-y: scroll;
 }
 
 .folder-browser > header {
     display: flex;
     align-items: center;
+}
+
+#createTaskBtn {
+    background-color: #CDEDF6;
+    padding: 5%;
+    margin-right: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1%;
+    width: 8rem;
+}
+
+#createTaskBtn:hover {
+    background-color: #5EB1BF;
 }

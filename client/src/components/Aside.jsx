@@ -6,13 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus, faCloud } from '@fortawesome/free-solid-svg-icons'
 import { faGoogleDrive } from '@fortawesome/free-brands-svg-icons'
 
-export default function Aside() {
-    const [isPcloudConnected, setIsPcloudConnected] = useState(true)
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/pcloud/checksession")
-            .then(res => console.log(res))
-    }, [])
+export default function Aside({ user }) {
 
     return (
         <aside>
@@ -23,14 +17,14 @@ export default function Aside() {
                 </button>
             </Link>
             
-            {isPcloudConnected &&<button className='asideBtn'>
+            {user.hasPcloud &&<button className='asideBtn'>
                 <FontAwesomeIcon id='addCloudIcon' icon={faCloud} size="lg" color='#042A2B' fixedWidth />
                 <span>Pcloud</span>
             </button>}
-            <button className='asideBtn'>
+            {user.hasGdrive && <button className='asideBtn'>
                 <FontAwesomeIcon id='addCloudIcon' icon={faGoogleDrive} size="lg" color='#042A2B' fixedWidth />
                 <span>Google Drive</span>
-            </button> 
+            </button> }
         </aside>
     )
 }

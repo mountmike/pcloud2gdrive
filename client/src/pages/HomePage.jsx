@@ -25,7 +25,7 @@ function HomePage({ user, onLogout }) {
       <Header user={user} onLogout={onLogout} />
       <TaskNav setCurrentPage={setCurrentPage} />
       <section className="bottom-wrapper">
-        <Aside setCurrentPage={setCurrentPage} />
+        <Aside setCurrentPage={setCurrentPage} user={user}/>
         <Main currentPage={currentPage} />
       </section>
     </div>
