@@ -7,7 +7,7 @@ import { faCirclePlus, faCloud } from '@fortawesome/free-solid-svg-icons'
 import { faGoogleDrive } from '@fortawesome/free-brands-svg-icons'
 
 export default function Aside() {
-    const [isPcloudConnected, setIsPcloudConnected] = useState(false)
+    const [isPcloudConnected, setIsPcloudConnected] = useState(true)
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/pcloud/checksession")

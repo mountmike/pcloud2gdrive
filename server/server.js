@@ -13,9 +13,7 @@ const pCloudController = require("./controllers/pcloud_controller")
 const taskController = require("./controllers/task_controller")
 
 app.set("view engine", "ejs")
-
 app.use(express.json())
-app.use(cors({origin: "http://localhost:3000", credentials: true}))
 app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }))
 app.use(require("./middlewares/method_override"))
