@@ -15,16 +15,16 @@
 
 .folder-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     gap: 2%;
+    overflow-y: scroll;
 }
 
 .folder-browser {
-    width: 40%;
     height: 80%;
-    background-color: #cdedf68b;
-    border-radius: 10px;
 }
 
+.folder-browser > header {
+    display: flex;
+    align-items: center;
+}
