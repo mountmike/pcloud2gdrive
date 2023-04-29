@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import Pcloud from '../utils/pcloud_api'
 import Gdrive from '../utils/gdrive_api'
 import { ColorRing } from  'react-loader-spinner'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+
 
 function Folders({ parentFolder, setTargetId, drive }) {
     const [folderList, setFolderList] = useState(null)
@@ -39,8 +42,9 @@ function Folders({ parentFolder, setTargetId, drive }) {
     return (
         <section className="folder-browser" style={{ paddingLeft: 10 }}>
           <header>
-            <span onClick={expand}>{isVisible ? "-" : "+"}</span>
+            <span id='expanderBtn' onClick={expand}>{isVisible ? "-" : "+"}</span>
             <input type="radio" name={drive === "pcloud" ? "originFolder" : "targetFolder"} value={parentFolder.id} onChange={handleSelection}/>
+            <FontAwesomeIcon icon={isVisible ? faFolderOpen : faFolder } fixedWidth />
             <label>{parentFolder.name}</label>
             {isLoading && <ColorRing className="folder-loading"
               visible={true}

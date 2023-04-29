@@ -4,6 +4,7 @@ import Task from '../utils/tasks_api'
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolderPlus } from '@fortawesome/free-solid-svg-icons'
+import { Link } from "react-router-dom";
 
 
 
@@ -41,10 +42,12 @@ export default function AddTaskPage() {
                 </section>
               </div>
               <div className="right-wrapper">
-                <button id='createTaskBtn' disabled={buttonEnabler()} onClick={handleBtn}>
-                  <FontAwesomeIcon icon={faFolderPlus} size="xl"/>
-                  <span>Create Task</span>
-                </button>
+                <Link to={buttonEnabler() ? "#" : "/tasks" }>
+                  <button id='createTaskBtn' disabled={buttonEnabler()} onClick={handleBtn}>
+                    <FontAwesomeIcon icon={faFolderPlus} size="xl"/>
+                    <span>Create Task</span>
+                  </button>
+                </Link>
               </div>
             </header>
             <div className="folders-wrapper">

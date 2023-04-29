@@ -12,6 +12,6 @@ nav {
     margin: 0;
 }
 
-.navBtn.active {
+.navBtn:hover {
     background-color: #5eb0bf38;
 }

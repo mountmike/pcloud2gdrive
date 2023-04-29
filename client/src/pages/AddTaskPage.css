@@ -30,6 +30,18 @@ main > header {
 .folder-browser > header {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+#createTaskBtn:disabled {
+    background-color: rgb(211, 211, 211);
+    cursor: auto;
+}
+
+#createTaskBtn:disabled:hover {
+    background-color: rgb(211, 211, 211);
+    cursor: auto;
 }
 
 #createTaskBtn {
@@ -46,4 +58,8 @@ main > header {
 
 #createTaskBtn:hover {
     background-color: #5EB1BF;
+}
+
+#expanderBtn:hover {
+    cursor: pointer;
 }
