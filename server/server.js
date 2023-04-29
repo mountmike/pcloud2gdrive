@@ -12,7 +12,6 @@ const gDriveController = require("./controllers/gdrive_controller")
 const pCloudController = require("./controllers/pcloud_controller")
 const taskController = require("./controllers/task_controller")
 
-app.set("view engine", "ejs")
 app.use(express.json())
 app.use(express.static("public"))
 app.use(express.urlencoded({ extended: true }))
@@ -37,34 +36,8 @@ app.use("/api/pcloud", pCloudController)
 app.use("/api/task", taskController)
 
 app.get("/", (req, res) => {
-  res.render("login");
+  res.send("we are online");
 });
-
-app.get("/app", (req, res) => {
-  console.log(req.session);
-  res.render("app");
-});
-
-
-app.get("/add-cloud", (req, res) => {
-  res.render("add_cloud");
-});
-
-
-// app.get("/chose-folders", (req, res) => {
-//   let pCloudFolders;
-//   let gDriveFolders;
-//   Pcloud.listRootFolder()
-//   .then(folders => {
-//     pCloudFolders = folders
-//     return Gdrive.listRootFolder()
-//   })
-//   .then(folders => {
-//     gDriveFolders = folders
-//     res.render("chose_folder", { pCloudFolders, gDriveFolders })
-//   })
-// })
-
 
 app.listen(config.port, () => {
   console.log(`listening on port ${config.port}`)
