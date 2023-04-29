@@ -1,7 +1,7 @@
-require('datejs')
 const config = require("../config")
 const express = require("express");
 const router = express.Router();
+const Gdrive = require("../models/gdrive_model")
 const fs = require("fs")
 const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
@@ -9,25 +9,6 @@ const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.clientSecret,
     config.gDriveAPI.redirectURI
   )
-
-const SCOPE = ["https://www.googleapis.com/auth/drive"]
-
-router.get("/", (req, res, next) => {
-    try {
-        res.send("here")
-    } catch (error) {
-        next(error)
-    }
-})
-
-
-router.get("/authURL", (req, res, next) => {
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPE,
-    })
-    res.redirect(authUrl)
-})
 
 router.get("/auth-token", (req, res) => {
     oAuth2Client.getToken(req.query.code, (err, token) => {
@@ -79,28 +60,14 @@ router.post('/read-files', (req, res) => {
     });
 });
 
-// ya29.a0Ael9sCMAuqomicOmja8JHewxVvgMWYS4sby1b1lnZk2jylpdoLlWO73k_uFG8Urp4GD-9sR5Q1vbcQ90Pmo5PXPVp4ZjAS3EQnkaX2OCK9xtkTc6bu2RAN_kww_VMi3YNPEpL00xTGBZtjtCuYv5ZzFfKLgsaCgYKAQYSARESFQF4udJhph0IJRAzIQ81DSyoYN2ArQ0163
-
 router.get('/folders/:folderId', (req, res) => {
-    let { folderId }  = req.params
+    const { folderId }  = req.params
 
-    let refresh = '1//0gj5E7MKPVAL4CgYIARAAGBASNwF-L9IrwsOQEoJV9nP-0bIQFb9zJgOtizj7Rgx57cUbhYv1YcQUP4H2ytvP0_sKof3sB0xM_vQ'
+    const token = req.session.Gdrive
 
+    Gdrive.listFolder(folderId, token)
+        .then(folders => res.json(folders))
 
-    oAuth2Client.setCredentials(req.session.Gdrive);
-    const drive = google.drive({ version: 'v3', auth: oAuth2Client });
-    drive.files.list({
-        q: `mimeType='application/vnd.google-apps.folder' and '${folderId}' in parents`,
-        fields: 'nextPageToken, files(id, name)',
-        spaces: 'drive',
-    }, (err, response) => {
-        if (err) {
-            console.log('The API returned an error: ' + err);
-            return res.status(400).send(err);
-        }
-        const folders = response.data.files
-        res.json(folders);
-    });
 });
 
 router.post('/upload-file', (req, res) => {

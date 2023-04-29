@@ -1,4 +1,5 @@
 const db = require("../db/firebase");
+const Pcloud = require("../models/pcloud_model.js")
 
 class Task {
     
@@ -8,13 +9,16 @@ class Task {
     }
 
     static async create(task) {
+        // create task document
         const docRef = db.collection('tasks').doc(task.taskName);
-
         await docRef.set({
-          first: 'Ada',
-          last: 'Lovelace',
-          born: 1815
+          name: task.taskName,
+          id: 1,
+          originFolderId: task.originFolderId,
+          targetFolderId: task.targetFolderId
         });
+        // build list of files from inside origin folder
+        Pcloud.listFolder(task.originFolderId)
     }
 }
 

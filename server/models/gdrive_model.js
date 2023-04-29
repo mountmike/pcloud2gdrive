@@ -8,6 +8,16 @@ const oAuth2Client = new google.auth.OAuth2(
 
 class Gdrive {
 
+    static listFolder(folderId, token) {
+        oAuth2Client.setCredentials(token);
+        const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+        return drive.files.list({
+            q: `mimeType='application/vnd.google-apps.folder' and '${folderId}' in parents`,
+            fields: 'nextPageToken, files(id, name)',
+            spaces: 'drive',
+        }).then(response => response.data.files)
+    }
+
     static listRootFolder() {
         oAuth2Client.setCredentials(token.googleDrive.token);
         const drive = google.drive({ version: 'v3', auth: oAuth2Client });
