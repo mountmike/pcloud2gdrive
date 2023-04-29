@@ -62,9 +62,7 @@ router.post('/read-files', (req, res) => {
 
 router.get('/folders/:folderId', (req, res) => {
     const { folderId }  = req.params
-
     const token = req.session.Gdrive
-
     Gdrive.listFolder(folderId, token)
         .then(folders => res.json(folders))
 

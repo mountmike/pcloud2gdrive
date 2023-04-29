@@ -1,0 +1,37 @@
+.current-tasks-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.task-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1%;
+    gap: .5rem;
+}
+
+.task-wrapper > article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #042A2B;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.left, .centre, .right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 1rem;
+}
+
+.left {
+    background-color: #cdedf669;
+    margin: .5rem;
+    width: 30rem;
+    padding: 0 1%;
+}

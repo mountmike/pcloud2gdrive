@@ -3,22 +3,30 @@ const Pcloud = require("../models/pcloud_model.js")
 
 class Task {
     
-    static getAll() {
-        // const sql = `SELECT * FROM tasks`
-        // return db.query(sql).then(tasks => tasks.rows)
+    static async fetchAll() {
+        const taskRef = db.collection('tasks')
+        const snapshot = await taskRef.get() 
+        let taskList = []
+        snapshot.forEach(doc => taskList.push(doc.data()))
+        return taskList
     }
 
-    static async create(task) {
+    static async create(task, pCloudToken) {
         // create task document
-        const docRef = db.collection('tasks').doc(task.taskName);
-        await docRef.set({
+        // const originPath = await Pcloud.
+        const taskRef = db.collection('tasks').doc(task.taskName);
+        await taskRef.set({
           name: task.taskName,
           id: 1,
           originFolderId: task.originFolderId,
           targetFolderId: task.targetFolderId
         });
         // build list of files from inside origin folder
-        Pcloud.listFolder(task.originFolderId)
+        const fileList = await Pcloud.listFolder(task.originFolderId, pCloudToken)
+        console.log(fileList);
+        fileList.contents.forEach(file => {
+            db.collection('tasks').doc(task.taskName).collection(`fileList`).doc(file.id).set(file);
+        })
     }
 }
 
