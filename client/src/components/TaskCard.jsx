@@ -1,7 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import Task from '../utils/tasks_api'
 
 export default function TaskCard({ task }) {
+
+    const handleStartBtn = (e) => {
+        Task.start({taskId: task.id})
+    }
 
     return (
         <article className="TaskCard">
@@ -17,7 +22,7 @@ export default function TaskCard({ task }) {
                 <p>percentage complete</p>
             </section>
             <section className="right">
-                <p>context menue</p>
+                <button onClick={handleStartBtn} id='startTaskBtn'>start task</button>
             </section>
         </article>
     )

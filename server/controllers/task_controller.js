@@ -14,4 +14,16 @@ router.post("/", async (req, res, next) => {
     Task.create(taskDetails, pCloudToken)
 })
 
+router.post('/start', async (req, res, next) => {
+    const task = await Task.fetchById(req.body.taskId)
+    const fileList = await Task.fetchFileList(req.body.taskId)
+    const taskObj = {
+        details: task,
+        fileList,
+        pCloudToken: req.session.pCloud.access_token,
+        gDriveToken: req.session.Gdrive
+    }
+    Task.startTransfer(taskObj)
+})
+
 module.exports = router

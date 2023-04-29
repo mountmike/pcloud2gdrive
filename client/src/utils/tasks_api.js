@@ -12,4 +12,8 @@ export default class Task {
         .then(res => console.log(res))
     }
 
+    static start(taskName) {
+        return axios.post('/api/task/start', taskName)
+    }
+
 }

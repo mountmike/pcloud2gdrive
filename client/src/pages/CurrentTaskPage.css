@@ -35,3 +35,9 @@
     width: 30rem;
     padding: 0 1%;
 }
+
+#startTaskBtn {
+    background-color: #cdedf6;
+    padding: 10%;
+    border-radius: 10px;
+}

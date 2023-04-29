@@ -1,5 +1,7 @@
 const db = require("../db/firebase");
+const { v4: uuidv4 } = require('uuid');
 const Pcloud = require("../models/pcloud_model.js")
+const fs = require('fs');
 
 class Task {
     
@@ -11,13 +13,31 @@ class Task {
         return taskList
     }
 
+    static async fetchById(taskId) {
+        const taskRef = db.collection('tasks').doc(taskId)
+        const doc = await taskRef.get()
+        if (!doc.exists) {
+            console.log('No such document!')
+        } else {
+            return doc.data()
+        }
+    }
+
+    static async fetchFileList(taskId) {
+        const taskRef = db.collection('tasks').doc(taskId).collection(`fileList`)
+        const snapshot = await taskRef.get() 
+        let fileList = []
+        snapshot.forEach(file => fileList.push(file.data()))
+        return fileList
+    }
+
     static async create(task, pCloudToken) {
         // create task document
-        // const originPath = await Pcloud.
-        const taskRef = db.collection('tasks').doc(task.taskName);
+        const taskId = uuidv4()
+        const taskRef = db.collection('tasks').doc(taskId);
         await taskRef.set({
           name: task.taskName,
-          id: 1,
+          id: taskId,
           originFolderId: task.originFolderId,
           targetFolderId: task.targetFolderId
         });
@@ -25,23 +45,21 @@ class Task {
         const fileList = await Pcloud.listFolder(task.originFolderId, pCloudToken)
         console.log(fileList);
         fileList.contents.forEach(file => {
-            db.collection('tasks').doc(task.taskName).collection(`fileList`).doc(file.id).set(file);
+            db.collection('tasks').doc(taskId).collection(`fileList`).doc(file.id).set(file);
         })
+    }
+
+    static async startTransfer(task) {
+        const folderName = `./tmp/${task.details.id}`
+        try {
+            if (!fs.existsSync(folderName)) {
+                fs.mkdirSync(folderName);
+        }
+        } catch (err) {
+        console.error(err);
+        }
+        Pcloud.downloadFiles(task.fileList, folderName, task.pCloudToken)
     }
 }
 
 module.exports = Task
-
-/*  old SQL db calls
-
-    static getAll() {
-        const sql = `SELECT * FROM tasks`
-        return db.query(sql).then(tasks => tasks.rows)
-    }
-
-    static create(task) {
-        const { userId, taskName, originId, destinationId } = task
-        const sql = `INSERT INTO tasks (user_id, task_name, origin_folder, destination_folder) values ($1, $2, $3, $4);`
-        db.query(sql,[userId, taskName, originId, destinationId])
-    }
-*/
