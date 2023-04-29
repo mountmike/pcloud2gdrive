@@ -1,6 +1,7 @@
 const db = require("../db/firebase");
 const { v4: uuidv4 } = require('uuid');
 const Pcloud = require("../models/pcloud_model.js")
+const Gdrive = require("../models/gdrive_model")
 const fs = require('fs');
 
 class Task {
@@ -49,7 +50,7 @@ class Task {
         })
     }
 
-    static async startTransfer(task) {
+    static async startTask(task) {
         const folderName = `./tmp/${task.details.id}`
         try {
             if (!fs.existsSync(folderName)) {
@@ -58,7 +59,15 @@ class Task {
         } catch (err) {
         console.error(err);
         }
-        Pcloud.downloadFiles(task.fileList, folderName, task.pCloudToken)
+
+        await Pcloud.downloadFiles(task.fileList, folderName, task.pCloudToken)
+
+        Gdrive.uploadFiles({
+            fileList: task.fileList, 
+            currentPath: folderName,
+            targetFolder: task.details.targetFolderId, 
+            token: task.gDriveToken
+        })    
     }
 }
 

@@ -3,12 +3,6 @@ const express = require("express");
 const router = express.Router();
 const Gdrive = require("../models/gdrive_model")
 const fs = require("fs")
-const { google } = require("googleapis")
-const oAuth2Client = new google.auth.OAuth2(
-    config.gDriveAPI.clientId,
-    config.gDriveAPI.clientSecret,
-    config.gDriveAPI.redirectURI
-  )
 
 router.get("/auth-token", (req, res) => {
     oAuth2Client.getToken(req.query.code, (err, token) => {
@@ -63,9 +57,7 @@ router.post('/read-files', (req, res) => {
 router.get('/folders/:folderId', (req, res) => {
     const { folderId }  = req.params
     const token = req.session.Gdrive
-    Gdrive.listFolder(folderId, token)
-        .then(folders => res.json(folders))
-
+    Gdrive.listFolder(folderId, token).then(folders => res.json(folders))
 });
 
 router.post('/upload-file', (req, res) => {

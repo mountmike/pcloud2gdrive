@@ -23,7 +23,7 @@ router.post('/start', async (req, res, next) => {
         pCloudToken: req.session.pCloud.access_token,
         gDriveToken: req.session.Gdrive
     }
-    Task.startTransfer(taskObj)
+    Task.startTask(taskObj)
 })
 
 module.exports = router

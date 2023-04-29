@@ -1,4 +1,5 @@
 const config = require("../config")
+const fs = require('fs');
 const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.clientId,
@@ -18,16 +19,38 @@ class Gdrive {
         }).then(response => response.data.files)
     }
 
-    static listRootFolder() {
-        oAuth2Client.setCredentials(token.googleDrive.token);
+    static async uploadFiles(task) {
+        oAuth2Client.setCredentials(task.token);
         const drive = google.drive({ version: 'v3', auth: oAuth2Client });
-        let parentID = 'root'
-        return drive.files.list({
-            'q': `'${parentID}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
-            'pageSize': 10,
-            'fields': "nextPageToken, files(id, name)"
+        task.fileList.forEach(file => {
+            const fileMetadata = {
+                name: file.name,
+                parents: [ task.targetFolder ]
+            };
+            const media = {
+                mimeType: file.type,
+                body: fs.createReadStream(`${task.currentPath}/${file.name}`),
+            };
+            drive.files.create({
+                    resource: fileMetadata,
+                    media: media,
+                    fields: "id",
+                },
+                (err, fileArg) => {
+                    oAuth2Client.setCredentials(null);
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        try {
+                            fs.unlinkSync(`${task.currentPath}/${file.name}`)
+                            console.log("success!")
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                }
+            );
         })
-        .then(res => res.data.files)
     }
 }
 
