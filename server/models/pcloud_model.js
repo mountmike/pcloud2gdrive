@@ -16,7 +16,6 @@ class Pcloud {
     }
 
     static downloadFile(fileId, target, token) {
-        console.log(fileId);
         const client = pCloudSdk.createClient(token)
         client.downloadfile(fileId, target)
     }
@@ -26,9 +25,20 @@ class Pcloud {
 
         await Promise.all(fileList.map(async (file) => {
             const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)
-          }));
+        }));
+    }
 
-     
+    static async getFilePath(folderId, token) {
+        const filePath = []
+        const client = pCloudSdk.createClient(token)
+        while (folderId > 0) {
+            const folder = await client.listfolder(Number(folderId))
+            filePath.push(folder.name)
+            folderId = folder.parentfolderid
+        }
+        filePath.push("Pcloud")
+        return filePath.reverse().join("/")
+        
     }
 
 }

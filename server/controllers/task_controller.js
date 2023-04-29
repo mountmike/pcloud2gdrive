@@ -11,7 +11,8 @@ router.get("/", (req, res, next) => {
 router.post("/", async (req, res, next) => {
     const taskDetails = req.body
     const pCloudToken = req.session.pCloud.access_token
-    Task.create(taskDetails, pCloudToken)
+    const gDriveToken = req.session.Gdrive
+    Task.create(taskDetails, pCloudToken, gDriveToken)
 })
 
 router.post('/start', async (req, res, next) => {

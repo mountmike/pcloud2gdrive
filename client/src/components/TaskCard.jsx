@@ -13,9 +13,10 @@ export default function TaskCard({ task }) {
             <section className="left">
                 <FontAwesomeIcon icon={faThumbtack} size='3x' />
                 <div className="task-details-wrapper">
-                    <span>Task name:</span> <span>{task.name}</span>
-                    <p>Origin path</p>
-                    <p>Target path</p>
+                    <h5>Task name:</h5><span> {task.name}</span><br />
+                    <h5>Origin path:</h5><span> {task.originPath}</span><br />
+                    <h5>Target path:</h5><span> {task.targetPath}</span>
+                  
                 </div>
             </section>
             <section className="center">

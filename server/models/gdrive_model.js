@@ -52,6 +52,28 @@ class Gdrive {
             );
         })
     }
+
+    static async getFilePath(folderId, token) {
+        const filePath = []
+        oAuth2Client.setCredentials(token);
+        const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+
+        while (folderId !== null) {
+            const folder = await drive.files.get({
+                fileId: folderId,
+                fields: "parents, id, name"
+            })
+            filePath.push(folder.data.name)
+            if (folder.data.parents !== undefined) {
+                folderId = folder.data.parents[0]
+            } else {
+                folderId = null
+            }   
+        }
+        return filePath.reverse().join("/")
+        
+    }
+
 }
 
 module.exports = Gdrive

@@ -32,19 +32,21 @@ class Task {
         return fileList
     }
 
-    static async create(task, pCloudToken) {
+    static async create(task, pCloudToken, gDriveToken) {
         // create task document
+        
         const taskId = uuidv4()
         const taskRef = db.collection('tasks').doc(taskId);
         await taskRef.set({
           name: task.taskName,
           id: taskId,
           originFolderId: task.originFolderId,
-          targetFolderId: task.targetFolderId
+          targetFolderId: task.targetFolderId,
+          originPath: await Pcloud.getFilePath(task.originFolderId, pCloudToken),
+          targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken)
         });
         // build list of files from inside origin folder
         const fileList = await Pcloud.listFolder(task.originFolderId, pCloudToken)
-        console.log(fileList);
         fileList.contents.forEach(file => {
             db.collection('tasks').doc(taskId).collection(`fileList`).doc(file.id).set(file);
         })
