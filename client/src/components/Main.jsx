@@ -8,7 +8,7 @@ export default function Main({ currentPage }) {
     return (
         <section className="main-page-wrapper">
             <Routes>
-                <Route path='/tasks' element={<CurrentTasksPage />} />
+                <Route path='/' element={<CurrentTasksPage />} />
                 <Route path='/add-task' element={<AddTaskPage />} />
                 <Route path='/add-cloud' element={<AddCloudPage />} />
             </Routes>

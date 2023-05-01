@@ -6,3 +6,5 @@ node_modules
 .env
 tmp
 pcloud2gdrive-firebase-adminsdk-rib62-9be3cc386c.json
+
+foldertest.js

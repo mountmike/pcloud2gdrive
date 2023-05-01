@@ -3,6 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const Pcloud = require("../models/pcloud_model.js")
 const Gdrive = require("../models/gdrive_model")
 const fs = require('fs');
+const fsPromise = require("fs").promises
+const path = require("path")
 
 class Task {
     
@@ -34,7 +36,6 @@ class Task {
 
     static async create(task, pCloudToken, gDriveToken) {
         // create task document
-        
         const taskId = uuidv4()
         const taskRef = db.collection('tasks').doc(taskId);
         await taskRef.set({
@@ -46,30 +47,61 @@ class Task {
           targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken)
         });
         // build list of files from inside origin folder
-        const fileList = await Pcloud.listFolder(task.originFolderId, pCloudToken)
+        const fileList = await Pcloud.listFolderRecursive(task.originFolderId, pCloudToken)
+
         fileList.contents.forEach(file => {
+
             db.collection('tasks').doc(taskId).collection(`fileList`).doc(file.id).set(file);
         })
     }
 
     static async startTask(task) {
-        const folderName = `./tmp/${task.details.id}`
+        const rootPath = path.resolve(__dirname, "../tmp", task.details.id) // const folderName = `/tmp/${task.details.id}`
+
         try {
-            if (!fs.existsSync(folderName)) {
-                fs.mkdirSync(folderName);
+            if (!fs.existsSync(rootPath)) {
+                await fsPromise.mkdir(rootPath)
         }
-        } catch (err) {
+        } catch (err) { 
         console.error(err);
         }
 
-        await Pcloud.downloadFiles(task.fileList, folderName, task.pCloudToken)
+        async function transferFiles(fileList, rootPath) {
+            const folderList = fileList.filter(el => el.isfolder)
 
-        Gdrive.uploadFiles({
-            fileList: task.fileList, 
-            currentPath: folderName,
-            targetFolder: task.details.targetFolderId, 
-            token: task.gDriveToken
-        })    
+            if (folderList.length === 0) {
+                await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
+                return
+            }
+
+            for (const folder of folderList) {
+                try {
+                    if (!fs.existsSync(path.resolve(rootPath, folder.name))) {
+                        await fsPromise.mkdir(path.resolve(rootPath, folder.name))
+                    }
+
+
+                    if (folder.contents.length > 0) {
+                        let newPath = path.resolve(rootPath, folder.name)
+                        transferFiles(folder.contents, newPath)
+                    }
+                    await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
+
+                } catch (err) { 
+                    console.error(err);
+                }
+            }
+        }
+        
+        transferFiles(task.fileList, rootPath)
+
+
+        // Gdrive.uploadFiles({
+        //     fileList: task.fileList, 
+        //     currentPath: folderName,
+        //     targetFolder: task.details.targetFolderId, 
+        //     token: task.gDriveToken
+        // })    
     }
 }
 

@@ -11,7 +11,7 @@ export default function TaskNav() {
         <section className="task-nav-wrapper">
             <div className="spacer"><h4>My Cloud</h4></div>
             <nav>
-                <Link to="/tasks">
+                <Link to="/">
                     <button className={ "navBtn"} >
                         <FontAwesomeIcon icon={faListCheck} size="lg" color='#042A2B' />
                     </button>
