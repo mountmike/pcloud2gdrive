@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react'
 import Task from '../utils/tasks_api'
 import TaskCard from '../components/TaskCard'
 import './CurrentTaskPage.css'
+import { ThreeCircles } from  'react-loader-spinner'
 
 export default function CurrentTasksPage() {
     const [taskList, setTaskList] = useState(null)
 
     useEffect(() => {
-        Task.fetchAll().then(tasks => setTaskList(tasks))
+        Task.fetchAll().then(tasks => {
+            setTaskList(tasks)
+        })
     }, [])
 
     return (
@@ -26,7 +29,19 @@ export default function CurrentTasksPage() {
                 taskList.map(task => (
                     <TaskCard key={task.originFolderId} task={task} />
                 ))
-                : "currently no tasks" }
+                :
+                <ThreeCircles
+                    height="300"
+                    width="300"
+                    color="#042A2B"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="three-circles-rotating"
+                    outerCircleColor=""
+                    innerCircleColor=""
+                    middleCircleColor=""
+                    /> }
             </section>
         </main>
     )
