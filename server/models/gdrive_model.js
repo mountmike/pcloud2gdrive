@@ -19,6 +19,26 @@ class Gdrive {
         }).then(response => response.data.files)
     }
 
+    static async createFolder(folder, token) {
+        oAuth2Client.setCredentials(token);
+        const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+        const folderMetadata = {
+            name: folder.name,
+            parents: [folder.parentId],
+            mimeType: 'application/vnd.google-apps.folder',
+          };
+          try {
+            const folder = await drive.files.create({
+              resource: folderMetadata,
+              fields: 'id',
+            });
+            return folder.data.id;
+          } catch (err) {
+            // TODO(developer) - Handle error
+            throw err;
+          }
+    }
+
     static async uploadFiles(task) {
         oAuth2Client.setCredentials(task.token);
         const drive = google.drive({ version: 'v3', auth: oAuth2Client });
@@ -42,7 +62,7 @@ class Gdrive {
                         console.error(err);
                     } else {
                         try {
-                            fs.unlinkSync(`${task.currentPath}/${file.name}`)
+                            // fs.unlinkSync(`${task.currentPath}/${file.name}`)
                             console.log("success!")
                         } catch (error) {
                             console.log(error)

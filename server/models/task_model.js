@@ -66,34 +66,52 @@ class Task {
         console.error(err);
         }
 
-        async function transferFiles(fileList, rootPath) {
+        async function transferFiles(fileList, rootPath, targetFolderId) {
             const folderList = fileList.filter(el => el.isfolder)
 
             if (folderList.length === 0) {
                 await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
+                Gdrive.uploadFiles({
+                    fileList, 
+                    currentPath: rootPath,
+                    targetFolder: targetFolderId, 
+                    token: task.gDriveToken
+                })    
                 return
             }
 
             for (const folder of folderList) {
                 try {
+                    // create new sub folders in /tmp folder
                     if (!fs.existsSync(path.resolve(rootPath, folder.name))) {
                         await fsPromise.mkdir(path.resolve(rootPath, folder.name))
                     }
 
-
+                    // create new folder on google drive
+                    const newFolderId = await Gdrive.createFolder({ name: folder.name, parentId: targetFolderId }, task.gDriveToken)
+                    console.log("folder made");
+                    // if more sub folders
                     if (folder.contents.length > 0) {
                         let newPath = path.resolve(rootPath, folder.name)
-                        transferFiles(folder.contents, newPath)
+                        transferFiles(folder.contents, newPath, newFolderId)
                     }
                     await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
+                    console.log("starting upload");
+                    Gdrive.uploadFiles({
+                        fileList, 
+                        currentPath: rootPath,
+                        targetFolder: targetFolderId, 
+                        token: task.gDriveToken
+                    })    
 
                 } catch (err) { 
                     console.error(err);
                 }
             }
+            
         }
         
-        transferFiles(task.fileList, rootPath)
+        transferFiles(task.fileList, rootPath, task.details.targetFolderId)
 
 
         // Gdrive.uploadFiles({

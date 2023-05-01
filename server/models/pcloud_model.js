@@ -31,16 +31,12 @@ class Pcloud {
         const client = pCloudSdk.createClient(token)
 
         await Promise.all(fileList.map(async (file) => {
-            const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)
-        }));
-    }
-
-    static async downloadFilesRecursive(fileList, target, token) {
-        const client = pCloudSdk.createClient(token)
-
-        await Promise.all(fileList.map(async (file) => {
-
-            const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)
+            try {
+                const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)
+            } catch (err) {
+                throw err;
+            }
+            
         }));
     }
 
