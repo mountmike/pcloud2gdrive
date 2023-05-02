@@ -12,8 +12,12 @@ export default class Task {
         .then(res => console.log(res))
     }
 
-    static start(taskName) {
-        return axios.post('/api/task/start', taskName)
+    static start(taskId) {
+        return axios.post('/api/task/start', taskId)
+    }
+
+    static delete(taskId) {
+        return axios.delete(`/api/task/${taskId}`)
     }
 
 }

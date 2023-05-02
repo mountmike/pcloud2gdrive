@@ -17,6 +17,7 @@
 
 .current-user:hover .dropdown-content {
     display: flex;
+    
 }
 
 .tag-line {

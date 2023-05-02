@@ -27,7 +27,7 @@ export default function CurrentTasksPage() {
             <section className="task-wrapper">
                 {taskList ?
                 taskList.map(task => (
-                    <TaskCard key={task.originFolderId} task={task} />
+                    <TaskCard key={task.originFolderId} task={task} setTaskList={setTaskList}/>
                 ))
                 :
                 <div className="loader-wrapper">

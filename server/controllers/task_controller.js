@@ -5,7 +5,6 @@ const Task = require("../models/task_model")
 
 
 router.get("/", (req, res, next) => {
-    console.log(req.session);
     Task.fetchAll().then(tasks => res.json(tasks))
 })
 
@@ -26,6 +25,11 @@ router.post('/start', async (req, res, next) => {
         gDriveToken: req.session.Gdrive
     }
     Task.startTask(taskObj)
+})
+
+router.delete("/:taskId", async (req, res, next) => {
+    const { taskId } = req.params
+    Task.deleteTask(taskId)
 })
 
 module.exports = router

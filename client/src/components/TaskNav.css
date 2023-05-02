@@ -1,3 +1,4 @@
+
 nav {
     width: 85%;
     display: flex;
@@ -15,3 +16,4 @@ nav {
 .navBtn:hover {
     background-color: #5eb0bf38;
 }
+

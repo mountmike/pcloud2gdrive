@@ -62,7 +62,7 @@ class Task {
           originPath: await Pcloud.getFilePath(task.originFolderId, pCloudToken),
           targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken),
           totalFiles,
-          filesComplete: 0
+          isComplete: false
         });
         
         // add document to sub collection "fileList" for each file in list
@@ -146,6 +146,12 @@ class Task {
         //     }
         //     console.log(`deleted ${rootPath}`);
         // })
+        await taskRef.update({ isComplete: true });
+    }
+
+    static async deleteTask(id) {
+        const res = await db.collection('tasks').doc(id).delete();
+        return res
     }
 }
 
