@@ -3,6 +3,12 @@ const express = require("express");
 const router = express.Router();
 const Gdrive = require("../models/gdrive_model")
 const fs = require("fs")
+const { google } = require("googleapis")
+const oAuth2Client = new google.auth.OAuth2(
+    config.gDriveAPI.clientId,
+    config.gDriveAPI.clientSecret,
+    config.gDriveAPI.redirectURI
+)
 
 router.get("/auth-token", (req, res) => {
     oAuth2Client.getToken(req.query.code, (err, token) => {
