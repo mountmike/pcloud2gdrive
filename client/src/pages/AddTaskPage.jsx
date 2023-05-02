@@ -53,6 +53,7 @@ export default function AddTaskPage() {
             </header>
             <div className="folders-wrapper">
                 <section className="origin-wrapper">
+                  <h4 className='folder-heading'>Origin Selection:</h4>
                     <Folders 
                         parentFolder={{name: "Pcloud", id: 0}} 
                         setTargetId={setOriginFolderId} 
@@ -60,6 +61,7 @@ export default function AddTaskPage() {
                     />
                 </section>
                 <section className="target-wrapper">
+                  <h4 className='folder-heading'>Target Selection:</h4>
                     <Folders 
                         parentFolder={{name: "Gdrive", id: 'root'}} 
                         setTargetId={setTargetFolderId} 

@@ -49,7 +49,7 @@ export default function TaskCard({ task, setTaskList }) {
 
     return (
         <article className="TaskCard">
-            <section className="left">
+            <section className="left" id={task.hasFailed && "failed"}>
                 <FontAwesomeIcon className='task-icon' icon={faThumbtack} size='3x' />
                 <div className="task-details-wrapper">
                     <h5>Task name:</h5><span> {task.name}</span><br />
@@ -60,6 +60,7 @@ export default function TaskCard({ task, setTaskList }) {
                 
             </section>
             <section className="center">
+                {task.hasFailed && <h4 className='task-complete-heading'><span>Task failed!</span> <FontAwesomeIcon icon={faXmark} /></h4>}
                 {task.isComplete ?
                 <div className="progress-wrapper">
                     <h4 className='task-complete-heading'><span>Task complete!</span> <FontAwesomeIcon icon={faCheck} /></h4>
@@ -68,7 +69,7 @@ export default function TaskCard({ task, setTaskList }) {
                 :
                 <div className="progress-wrapper">
                     <p>Percentage complete: {percentageComplete()}%</p>
-                    <ProgressTracker progress={percentageComplete()} />
+                    <ProgressTracker progress={percentageComplete()} colour={!task.hasFailed ? "primary" : "error"} />
                 </div>    
                 }       
             </section>

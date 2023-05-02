@@ -18,7 +18,6 @@ export default function CurrentTasksPage() {
         });
         setTaskList(tasks)
         });
-
         // Task.fetchAll().then(tasks => {
         //     setTaskList(tasks)
         // })

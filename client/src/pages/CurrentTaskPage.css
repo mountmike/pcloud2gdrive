@@ -52,6 +52,10 @@
     position: relative;
 }
 
+#failed {
+    background-color: #fda177c6;
+}
+
 .task-icon {
     width: 5rem;
 }
@@ -63,6 +67,9 @@
 }
 
 #startTaskBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #cdedf6;
     padding: 10%;
     border-radius: 10px;
