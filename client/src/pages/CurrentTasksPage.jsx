@@ -30,18 +30,20 @@ export default function CurrentTasksPage() {
                     <TaskCard key={task.originFolderId} task={task} />
                 ))
                 :
-                <ThreeCircles
-                    height="300"
-                    width="300"
-                    color="#042A2B"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                    ariaLabel="three-circles-rotating"
-                    outerCircleColor=""
-                    innerCircleColor=""
-                    middleCircleColor=""
-                    /> }
+                <div className="loader-wrapper">
+                    <ThreeCircles
+                        height="300"
+                        width="300"
+                        color="#042A2B"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                        ariaLabel="three-circles-rotating"
+                        outerCircleColor=""
+                        innerCircleColor=""
+                        middleCircleColor=""
+                        />
+                </div> }
             </section>
         </main>
     )

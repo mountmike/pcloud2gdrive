@@ -65,7 +65,7 @@ router.post('/upload-file', (req, res) => {
     form.parse(req, (err, fields, files) => {
         if (err) return res.status(400).send(err);
         const token = JSON.parse(fields.token);
-        console.log(token)
+
         if (token == null) return res.status(400).send('Token not found');
         oAuth2Client.setCredentials(token);
         console.log(files.file);

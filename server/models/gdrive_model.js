@@ -60,14 +60,7 @@ class Gdrive {
                     oAuth2Client.setCredentials(null);
                     if (err) {
                         console.error(err);
-                    } else {
-                        try {
-                            // fs.unlinkSync(`${task.currentPath}/${file.name}`)
-                            console.log("success!")
-                        } catch (error) {
-                            console.log(error)
-                        }
-                    }
+                    } 
                 }
             );
         })

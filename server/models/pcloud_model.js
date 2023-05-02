@@ -29,7 +29,6 @@ class Pcloud {
 
     static async downloadFiles(fileList, target, token) {
         const client = pCloudSdk.createClient(token)
-
         await Promise.all(fileList.map(async (file) => {
             try {
                 const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)

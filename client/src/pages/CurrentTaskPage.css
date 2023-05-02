@@ -8,9 +8,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 0 1%;
     gap: .5rem;
+    height: 100%;
 }
 
 .TaskCard {
@@ -72,4 +73,12 @@
     height: 60%;
     width: 60%;
     transition: .2s;
+}
+
+.loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

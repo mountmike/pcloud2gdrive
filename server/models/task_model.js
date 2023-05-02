@@ -56,7 +56,7 @@ class Task {
     }
 
     static async startTask(task) {
-        const rootPath = path.resolve(__dirname, "../tmp", task.details.id) // const folderName = `/tmp/${task.details.id}`
+        const rootPath = path.resolve(__dirname, "../tmp", task.details.id)
 
         try {
             if (!fs.existsSync(rootPath)) {
@@ -68,11 +68,12 @@ class Task {
 
         async function transferFiles(fileList, rootPath, targetFolderId) {
             const folderList = fileList.filter(el => el.isfolder)
+            const filesOnly = fileList.filter(file => !file.isfolder && file.name !== ".DS_Store")
 
             if (folderList.length === 0) {
                 await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
                 Gdrive.uploadFiles({
-                    fileList, 
+                    fileList: filesOnly, 
                     currentPath: rootPath,
                     targetFolder: targetFolderId, 
                     token: task.gDriveToken
@@ -89,16 +90,16 @@ class Task {
 
                     // create new folder on google drive
                     const newFolderId = await Gdrive.createFolder({ name: folder.name, parentId: targetFolderId }, task.gDriveToken)
-                    console.log("folder made");
+                    
                     // if more sub folders
                     if (folder.contents.length > 0) {
-                        let newPath = path.resolve(rootPath, folder.name)
+                        var newPath = path.resolve(rootPath, folder.name)
                         transferFiles(folder.contents, newPath, newFolderId)
                     }
-                    await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
-                    console.log("starting upload");
+                    
+                    await Pcloud.downloadFiles(filesOnly, rootPath, task.pCloudToken)
                     Gdrive.uploadFiles({
-                        fileList, 
+                        fileList: filesOnly, 
                         currentPath: rootPath,
                         targetFolder: targetFolderId, 
                         token: task.gDriveToken
@@ -111,15 +112,14 @@ class Task {
             
         }
         
-        transferFiles(task.fileList, rootPath, task.details.targetFolderId)
+        await transferFiles(task.fileList, rootPath, task.details.targetFolderId)
 
-
-        // Gdrive.uploadFiles({
-        //     fileList: task.fileList, 
-        //     currentPath: folderName,
-        //     targetFolder: task.details.targetFolderId, 
-        //     token: task.gDriveToken
-        // })    
+        fs.rm(rootPath, { recursive: true, force: true }, (err) => {
+            if (err) {
+                return console.log(err)
+            }
+            console.log(`deleted ${rootPath}`);
+        })
     }
 }
 
