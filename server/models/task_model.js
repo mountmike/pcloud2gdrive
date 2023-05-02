@@ -4,7 +4,7 @@ const Pcloud = require("../models/pcloud_model.js")
 const Gdrive = require("../models/gdrive_model")
 const fs = require('fs');
 const fsPromise = require("fs").promises
-const path = require("path")
+const path = require("path");
 
 class Task {
     
@@ -35,6 +35,22 @@ class Task {
     }
 
     static async create(task, pCloudToken, gDriveToken) {
+        // build list of files from inside origin folder
+        const fileList = await Pcloud.listFolderRecursive(task.originFolderId, pCloudToken)
+        let totalFiles = 0
+
+        function getFileCount(fileList) {
+            for (const file of fileList) {
+                if (file.contents) {
+                    getFileCount(file.contents)
+                } else if (!file.isfolder && file.name !== ".DS_Store") {
+                    totalFiles++
+                }
+            }
+        }
+
+        getFileCount(fileList.contents)
+
         // create task document
         const taskId = uuidv4()
         const taskRef = db.collection('tasks').doc(taskId);
@@ -44,11 +60,12 @@ class Task {
           originFolderId: task.originFolderId,
           targetFolderId: task.targetFolderId,
           originPath: await Pcloud.getFilePath(task.originFolderId, pCloudToken),
-          targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken)
+          targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken),
+          totalFiles,
+          filesComplete: 0
         });
-        // build list of files from inside origin folder
-        const fileList = await Pcloud.listFolderRecursive(task.originFolderId, pCloudToken)
-
+        
+        // add document to sub collection "fileList" for each file in list
         fileList.contents.forEach(file => {
 
             db.collection('tasks').doc(taskId).collection(`fileList`).doc(file.id).set(file);
@@ -58,6 +75,11 @@ class Task {
     static async startTask(task) {
         const rootPath = path.resolve(__dirname, "../tmp", task.details.id)
 
+        // reset progress status
+        const taskRef = db.collection('tasks').doc(task.details.id);
+        const shardRef = taskRef.collection('shards').doc("progress");
+        shardRef.set({count: 0});
+        
         try {
             if (!fs.existsSync(rootPath)) {
                 await fsPromise.mkdir(rootPath)
@@ -71,15 +93,26 @@ class Task {
             const filesOnly = fileList.filter(file => !file.isfolder && file.name !== ".DS_Store")
 
             if (folderList.length === 0) {
-                await Pcloud.downloadFiles(fileList, rootPath, task.pCloudToken)
-                Gdrive.uploadFiles({
+                await Pcloud.downloadFiles(filesOnly, rootPath, task.pCloudToken, task.details.id)
+                await Gdrive.uploadFiles({
                     fileList: filesOnly, 
                     currentPath: rootPath,
                     targetFolder: targetFolderId, 
-                    token: task.gDriveToken
-                })    
+                    token: task.gDriveToken,
+                    id: task.details.id
+                }); 
                 return
             }
+
+            await Pcloud.downloadFiles(filesOnly, rootPath, task.pCloudToken, task.details.id)
+            await Gdrive.uploadFiles({
+                fileList: filesOnly, 
+                currentPath: rootPath,
+                targetFolder: targetFolderId, 
+                token: task.gDriveToken,
+                id: task.details.id
+            })   
+            
 
             for (const folder of folderList) {
                 try {
@@ -93,17 +126,10 @@ class Task {
                     
                     // if more sub folders
                     if (folder.contents.length > 0) {
-                        var newPath = path.resolve(rootPath, folder.name)
+                        const newPath = path.resolve(rootPath, folder.name)
                         transferFiles(folder.contents, newPath, newFolderId)
                     }
                     
-                    await Pcloud.downloadFiles(filesOnly, rootPath, task.pCloudToken)
-                    Gdrive.uploadFiles({
-                        fileList: filesOnly, 
-                        currentPath: rootPath,
-                        targetFolder: targetFolderId, 
-                        token: task.gDriveToken
-                    })    
 
                 } catch (err) { 
                     console.error(err);
@@ -114,12 +140,12 @@ class Task {
         
         await transferFiles(task.fileList, rootPath, task.details.targetFolderId)
 
-        fs.rm(rootPath, { recursive: true, force: true }, (err) => {
-            if (err) {
-                return console.log(err)
-            }
-            console.log(`deleted ${rootPath}`);
-        })
+        // fs.rm(rootPath, { recursive: true }, (err) => {
+        //     if (err) {
+        //         return console.log(err)
+        //     }
+        //     console.log(`deleted ${rootPath}`);
+        // })
     }
 }
 

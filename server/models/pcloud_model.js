@@ -1,7 +1,7 @@
 const config = require("../config")
 const pCloudSdk = require('pcloud-sdk-js')
-const axios = require('axios')
-const path = require("path")
+const db = require("../db/firebase");
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 global.locationid = 1;
 
 class Pcloud {
@@ -27,11 +27,19 @@ class Pcloud {
         client.downloadfile(fileId, target)
     }
 
-    static async downloadFiles(fileList, target, token) {
+    static async downloadFiles(fileList, target, token, taskId) {
+        // function for increasing progress count in db (using shards)
+        function incrementCounter() {
+            const taskRef = db.collection('tasks').doc(taskId);
+            const shardRef = taskRef.collection('shards').doc("progress");
+            return shardRef.set({count: FieldValue.increment(1)}, {merge: true});
+          }
         const client = pCloudSdk.createClient(token)
         await Promise.all(fileList.map(async (file) => {
             try {
                 const contents = await client.downloadfile(file.fileid, `${target}/${file.name}`)
+                incrementCounter()
+                return contents
             } catch (err) {
                 throw err;
             }

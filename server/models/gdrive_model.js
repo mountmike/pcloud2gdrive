@@ -1,5 +1,7 @@
 const config = require("../config")
 const fs = require('fs');
+const db = require("../db/firebase");
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 const { google } = require("googleapis")
 const oAuth2Client = new google.auth.OAuth2(
     config.gDriveAPI.clientId,
@@ -40,9 +42,16 @@ class Gdrive {
     }
 
     static async uploadFiles(task) {
+        // function for increasing progress count in db (using shards)
+        function incrementCounter() {
+            const taskRef = db.collection('tasks').doc(task.id);
+            const shardRef = taskRef.collection('shards').doc("progress");
+            return shardRef.set({count: FieldValue.increment(1)}, {merge: true});
+        }
+
         oAuth2Client.setCredentials(task.token);
         const drive = google.drive({ version: 'v3', auth: oAuth2Client });
-        task.fileList.forEach(file => {
+        await Promise.all(task.fileList.map(async (file) => {
             const fileMetadata = {
                 name: file.name,
                 parents: [ task.targetFolder ]
@@ -51,7 +60,8 @@ class Gdrive {
                 mimeType: file.type,
                 body: fs.createReadStream(`${task.currentPath}/${file.name}`),
             };
-            drive.files.create({
+            try {
+                const upload = drive.files.create({
                     resource: fileMetadata,
                     media: media,
                     fields: "id",
@@ -61,9 +71,15 @@ class Gdrive {
                     if (err) {
                         console.error(err);
                     } 
+                    incrementCounter()
+                    return upload
                 }
             );
-        })
+            } catch (error) {
+                throw error
+            }
+            
+        }))
     }
 
     static async getFilePath(folderId, token) {
