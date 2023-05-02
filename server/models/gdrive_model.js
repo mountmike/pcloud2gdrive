@@ -43,7 +43,7 @@ class Gdrive {
 
     static async uploadFiles(task) {
         // function for increasing progress count in db (using shards)
-        function incrementCounter() {
+        async function incrementCounter() {
             const taskRef = db.collection('tasks').doc(task.id);
             const shardRef = taskRef.collection('shards').doc("progress");
             return shardRef.set({count: FieldValue.increment(1)}, {merge: true});
@@ -54,27 +54,21 @@ class Gdrive {
         await Promise.all(task.fileList.map(async (file) => {
             const fileMetadata = {
                 name: file.name,
-                parents: [ task.targetFolder ]
+                parents: [ task.targetFolder ],
+                fields: 'id',
             };
             const media = {
                 mimeType: file.type,
                 body: fs.createReadStream(`${task.currentPath}/${file.name}`),
             };
             try {
-                const upload = drive.files.create({
+                const upload = await drive.files.create({
                     resource: fileMetadata,
                     media: media,
                     fields: "id",
-                },
-                (err, fileArg) => {
-                    oAuth2Client.setCredentials(null);
-                    if (err) {
-                        console.error(err);
-                    } 
-                    incrementCounter()
-                    return upload
-                }
-            );
+                });
+                await incrementCounter()
+                return upload.data.id
             } catch (error) {
                 throw error
             }

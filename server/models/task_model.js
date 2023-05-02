@@ -127,7 +127,7 @@ class Task {
                     // if more sub folders
                     if (folder.contents.length > 0) {
                         const newPath = path.resolve(rootPath, folder.name)
-                        transferFiles(folder.contents, newPath, newFolderId)
+                        await transferFiles(folder.contents, newPath, newFolderId)
                     }
                     
 
@@ -140,13 +140,19 @@ class Task {
         
         await transferFiles(task.fileList, rootPath, task.details.targetFolderId)
 
-        // fs.rm(rootPath, { recursive: true }, (err) => {
-        //     if (err) {
-        //         return console.log(err)
-        //     }
-        //     console.log(`deleted ${rootPath}`);
-        // })
-        await taskRef.update({ isComplete: true });
+        // await fsPromise.rmdir(rootPath, { recursive: true, force: true })
+        
+        // console.log(`deleted ${rootPath}`)
+
+        let finalCount = await shardRef.get()
+        if (!finalCount.exists) {
+            console.log('No such document!');
+        } else {
+            finalCount = finalCount.data().count;
+        }
+        console.log(finalCount);
+
+        // if (finalCount === task.details.total)
     }
 
     static async deleteTask(id) {
