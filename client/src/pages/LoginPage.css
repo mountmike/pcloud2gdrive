@@ -1,0 +1,70 @@
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #5EB1BF;
+    background-color: #5EB1BF;
+    opacity: 0.8;
+    background-image: radial-gradient(circle at center center, #e9e9e9, #5EB1BF), repeating-radial-gradient(circle at center center, #e9e9e9, #e9e9e9, 35px, transparent 70px, transparent 35px);
+    background-blend-mode: multiply;
+}
+
+.login-forms {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5%;
+    background-color: #E9E9E9;
+    border-radius: 20px;
+    padding: 1%;
+    width: 50%;
+}
+
+.form-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 40%;
+}
+
+.center-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    height: 100%;
+}
+
+.divider {
+    width: 2px;
+    height: 70%;
+    background-color: #042A2B;
+}
+
+.signup-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.signup-wrapper > p {
+    width: 60%;
+    text-align: center;
+    font-weight: 300;
+}
+
+#loginBtn {
+    width: 50%;
+    height: 2rem;
+    background-color: #5eb0bfc6;
+    border-radius: 5px;
+    color: white;
+}
+
+#loginBtn:hover {
+    background-color: #367b87;
+}

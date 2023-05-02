@@ -1,5 +1,9 @@
 import { useState } from "react"
 import { login as usersApiLogin } from '../utils/users_api'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons'
+import Button from '@mui/material/Button';
+import './LoginPage.css'
 
 export default function LoginPage({ onLogin }) {
     const [formData, setFormData] = useState({ email: null, password: null })
@@ -34,18 +38,28 @@ export default function LoginPage({ onLogin }) {
 
 
     return (
-        <section>
-            <h1>login</h1>
+        <div className="login-wrapper">
+            <main className="login-forms">
+                <form onChange={handleChange} onSubmit={handleSubmit} className="form-left">
+                    <h2>Login</h2>
+                    <input name="email" type="text" placeholder="email" />
+                    <input name="password" type="password" placeholder="password" />
+                    <button id="loginBtn">Login</button>
+                    <p>{error}</p>
+                </form>
 
-            <form onChange={handleChange} onSubmit={handleSubmit}>
-                <label>email</label>
-                <input name="email" type="text" />
-                <label>password</label>
-                <input name="password" type="password" />
-                <button>login</button>
-            </form>
+                <div className="center-unit">
+                    <FontAwesomeIcon icon={faCloudArrowUp} size="2x" color='#5EB1BF' />
+                    <span className='tag-line'>pcloud2gdrive</span>
+                    <div className="divider"></div>
+                </div>
 
-            <p>{error}</p>
-        </section>
+                <div className="signup-wrapper">
+                    <p>A tool for migrating data from Pcloud Drive to Google Drive.</p>
+                    <Button size='medium' variant="outlined" color="info" >Create account</Button>
+                </div>
+               
+            </main>
+        </div>
     )
 }
