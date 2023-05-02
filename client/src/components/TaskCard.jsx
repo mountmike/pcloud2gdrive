@@ -1,20 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbtack, faPlay, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faThumbtack, faPlay, faXmark, faCheck } from '@fortawesome/free-solid-svg-icons'
 import Task from '../utils/tasks_api'
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from '../db/firebase'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProgressTracker from './ProgressTracker'
 import Button from '@mui/material/Button';
 
 export default function TaskCard({ task, setTaskList }) {
     const [progress, setProgress] = useState(0)
-    const [isComplete, setIsComplete] = useState(task.isComplete)
     const [popupIsVisible, setPopupIsVisible] = useState(false)
 
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, "tasks", task.id, "shards", "progress"), (doc) => {
+            if (doc.exists()) {
+                setProgress(doc.data().count)
+            }
+        });
+    }, [])
    
     const percentageComplete = () => {
-        if (isComplete) {
+        if (task.isComplete) {
             return 100
         }
         const total = task.totalFiles
@@ -24,11 +30,7 @@ export default function TaskCard({ task, setTaskList }) {
     const handleStartBtn = async (e) => {
         setProgress(0)
         Task.start({taskId: task.id})
-        const unsub = onSnapshot(doc(db, "tasks", task.id, "shards", "progress"), (doc) => {
-            if (doc.exists()) {
-                setProgress(doc.data().count)
-            }
-        });
+        
     }
 
     const handleCloseBtn = (e) => {
@@ -42,7 +44,6 @@ export default function TaskCard({ task, setTaskList }) {
     const handleYesBtn = (e) => {
         setPopupIsVisible(false)
         Task.delete(task.id)
-        setTaskList(previousList => previousList.filter(el => el.id !== task.id))
 
     }
 
@@ -59,13 +60,23 @@ export default function TaskCard({ task, setTaskList }) {
                 
             </section>
             <section className="center">
-                <p>percentage complete: {percentageComplete()}%</p>
-                <ProgressTracker progress={percentageComplete()} />
+                {task.isComplete ?
+                <div className="progress-wrapper">
+                    <h4 className='task-complete-heading'><span>Task complete!</span> <FontAwesomeIcon icon={faCheck} /></h4>
+                    <ProgressTracker progress={100} colour="success" />
+                </div>
+                :
+                <div className="progress-wrapper">
+                    <p>Percentage complete: {percentageComplete()}%</p>
+                    <ProgressTracker progress={percentageComplete()} />
+                </div>    
+                }       
             </section>
             <section className="right">
                 <button onClick={handleStartBtn} id='startTaskBtn'>
                     <FontAwesomeIcon icon={faPlay} size='2x' />
                 </button>
+                
             </section>
             <div className={popupIsVisible ? "popup-wrapper visible" : "popup-wrapper"} >
                 <div className="popup">

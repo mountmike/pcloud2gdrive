@@ -142,3 +142,13 @@
 .popup > p {
     margin: 4%
 }
+
+.progress-wrapper {
+    width: 15rem;
+}
+
+.task-complete-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

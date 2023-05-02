@@ -62,7 +62,8 @@ class Task {
           originPath: await Pcloud.getFilePath(task.originFolderId, pCloudToken),
           targetPath: await Gdrive.getFilePath(task.targetFolderId, gDriveToken),
           totalFiles,
-          isComplete: false
+          isComplete: false,
+          hasFailed: false
         });
         
         // add document to sub collection "fileList" for each file in list
@@ -79,7 +80,7 @@ class Task {
         const taskRef = db.collection('tasks').doc(task.details.id);
         const shardRef = taskRef.collection('shards').doc("progress");
         shardRef.set({count: 0});
-        
+        // create folder for the task in /tmp
         try {
             if (!fs.existsSync(rootPath)) {
                 await fsPromise.mkdir(rootPath)
@@ -139,20 +140,25 @@ class Task {
         }
         
         await transferFiles(task.fileList, rootPath, task.details.targetFolderId)
+        // remove task folder in /tmp
+        await fsPromise.rmdir(rootPath, { recursive: true, force: true })
+        console.log(`deleted ${rootPath}`)
 
-        // await fsPromise.rmdir(rootPath, { recursive: true, force: true })
-        
-        // console.log(`deleted ${rootPath}`)
-
+        // check if the download/upload count matches the total file count
         let finalCount = await shardRef.get()
         if (!finalCount.exists) {
             console.log('No such document!');
         } else {
             finalCount = finalCount.data().count;
         }
-        console.log(finalCount);
 
-        // if (finalCount === task.details.total)
+        if (finalCount / 2 === task.details.totalFiles) {
+            taskRef.update({isComplete: true});
+            console.log("Task is complete");
+        } else {
+            taskRef.update({hasFailed: true})
+            console.log("Task did not complete");
+        }
     }
 
     static async deleteTask(id) {

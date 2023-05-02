@@ -27,6 +27,7 @@ export default function AddTaskPage() {
 
     const handleBtn = (e) => {
       Task.create({taskName, originFolderId, targetFolderId})
+      
     }
     
     
@@ -42,7 +43,7 @@ export default function AddTaskPage() {
                 </section>
               </div>
               <div className="right-wrapper">
-                <Link to={buttonEnabler() ? "#" : "/tasks" }>
+                <Link to={buttonEnabler() ? "#" : "/" }>
                   <button id='createTaskBtn' disabled={buttonEnabler()} onClick={handleBtn}>
                     <FontAwesomeIcon icon={faFolderPlus} size="xl"/>
                     <span>Create Task</span>

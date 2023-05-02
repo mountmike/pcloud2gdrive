@@ -1,10 +1,10 @@
 import LinearProgressWithLabel from '@mui/material/LinearProgress';
 
-export default function ProgressTracker({ progress }) {
+export default function ProgressTracker({ progress, colour }) {
     return (
       <div>
         <LinearProgressWithLabel 
-          color="inherit" 
+          color={colour} 
           value={progress} 
           variant="determinate"  
         />

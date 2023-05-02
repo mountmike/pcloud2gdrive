@@ -3,14 +3,25 @@ import Task from '../utils/tasks_api'
 import TaskCard from '../components/TaskCard'
 import './CurrentTaskPage.css'
 import { ThreeCircles } from  'react-loader-spinner'
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from '../db/firebase'
 
 export default function CurrentTasksPage() {
     const [taskList, setTaskList] = useState(null)
 
     useEffect(() => {
-        Task.fetchAll().then(tasks => {
-            setTaskList(tasks)
-        })
+        const q = query(collection(db, "tasks"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const tasks = [];
+        querySnapshot.forEach((doc) => {
+            tasks.push(doc.data());
+        });
+        setTaskList(tasks)
+        });
+
+        // Task.fetchAll().then(tasks => {
+        //     setTaskList(tasks)
+        // })
     }, [])
 
     return (
