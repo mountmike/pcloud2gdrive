@@ -65,7 +65,7 @@ export default function LoginPage({ onLogin }) {
                     <div className="divider"></div>
                 </div>
                 {!hasAccount ?
-                <div className="right-wrapper">
+                <div className="right-signup-wrapper">
                     <p>A tool for migrating data from Pcloud Drive to Google Drive.</p>
                     <Button onClick={(e) => setIsSignup(true)} size='medium' variant="outlined" color="info" >Create account</Button>
                 </div>

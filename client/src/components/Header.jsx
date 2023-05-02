@@ -15,9 +15,9 @@ function Header({ user, onLogout }) {
                 <FontAwesomeIcon className='icons' icon={faUser} size="xl" color='#CDEDF6' />
                 <div className='dropdown-content'>
                     <header>
-                        <p>{user.username}</p>
+                        <h4>{user.username}</h4>
                     </header>
-                    <button onClick={onLogout}>logout</button>
+                    <button id='logoutBtn' onClick={onLogout}>logout</button>
                 </div>
             </div>
         </header>

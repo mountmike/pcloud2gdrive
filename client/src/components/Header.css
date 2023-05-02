@@ -36,10 +36,11 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     flex-direction: column;
+    width: 10rem;
 }
 
 .dropdown-content > header {
-    background-color: #5EB1BF;
+    background-color: #042A2B;
     color: white;
     border-radius: 10px 10px 0 0;
     width: 100%;
@@ -51,4 +52,9 @@
 
 .dropdown-content > button {
     height: 2rem;
+}
+
+#logoutBtn:hover {
+    background-color: #cdedf6be;
+    border-radius: 10px;
 }
