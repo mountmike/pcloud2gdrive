@@ -4,15 +4,16 @@ When faced with the need to migrate from one cloud storage service to another, I
 
 Naturally I did what any creative problem solver would do, and wasted far more time than the upload ever would have taken on building my own application that would automtate the process.
 
-Presenting **pcloud2gdrive:** a tool for migrating data from Pcloud Drive to Google Drive built using:
+Presenting **pcloud2gdrive:** a tool for migrating data from pCloud Drive to Google Drive built using:
 - REACT.js
 - NODE.js
-- Firebase - Authenticator / Firestore
-- Googledrive/Pcloud SDKs
+- Firebase / Firestore
+- PostgreSQL
+- Google Drive/pCloud SDKs
 
-Live demo: *insert link*
+**Live demo:**  *link coming soon*
 
-Screenshot: *insert link*
+**Screenshot:** ![Animated gif of working app](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/screenshot1.gif)
 
 # Planning
 ### Testing the concept

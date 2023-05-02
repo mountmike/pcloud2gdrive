@@ -19,7 +19,7 @@ router.get("/auth-token", (req, res) => {
             console.log(token);
             req.session.Gdrive = token
             oAuth2Client.setCredentials(req.session.Gdrive)
-            res.send("success")
+            res.send("<script>window.close();</script > ")
         }
     })
 })
