@@ -19,7 +19,6 @@ const defaultPageState = [
 
 function HomePage({ user, onLogout }) {
   const [currentPage, setCurrentPage] = useState(defaultPageState)
-
   return (
     <div className="App">
       <Header user={user} onLogout={onLogout} />

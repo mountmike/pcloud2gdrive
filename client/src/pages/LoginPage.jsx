@@ -51,7 +51,17 @@ export default function LoginPage({ onLogin }) {
     return (
         <div className="login-wrapper">
             <main className="login-forms">
-                <form onChange={handleLoginFormChange} onSubmit={handleLogin} className="form-left">
+            <button className="sign-in">
+                <img
+                    onClick={onLogin}
+                    src="https://gist.githubusercontent.com/JoostvDoorn/32d7b63c69a2522d4b19c43ac01081bd/raw/5c148a2c250d47c62d0ee0eea4a4000682d8b7fd/btn_google_signin_dark_pressed_web.png"
+                    alt="sign in with google"
+                    type="button"
+                />
+                </button>
+
+
+                {/* <form onChange={handleLoginFormChange} onSubmit={handleLogin} className="form-left">
                     <h2>Login</h2>
                     <input name="email" type="text" placeholder="email" />
                     <input name="password" type="password" placeholder="password" />
@@ -84,7 +94,7 @@ export default function LoginPage({ onLogin }) {
                     <input name="email" type="text" placeholder="email" />
                     <input name="password" type="password" placeholder="password" />
                     <button id="loginBtn">Sign up</button>
-                </form>
+                </form> */}
             </main>
         </div>
     )

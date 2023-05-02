@@ -1,3 +1,4 @@
+import axios from 'axios';
 import './AddCloudPage.css'
 import {useEffect, useState} from "react";
 
@@ -26,6 +27,7 @@ export default function AddCloudPage() {
             setExternalPopup(popup);
         }
 
+        
     }
     
     return (
@@ -33,10 +35,10 @@ export default function AddCloudPage() {
             <h3>Select Cloud Service</h3>
             <p>Click on the cloud drive to connect to it</p>
             <div className="btn-wrapper">
-                <button id='connectPcloud' onClick={connectClick}>
+                <a id='connectPcloud' href={`https://my.pcloud.com/oauth2/authorize?redirect_uri=${process.env.REACT_APP_PCLOUD_REDIRECT_URI}&client_id=${process.env.REACT_APP_PCLOUD_CLIENT_ID}&response_type=code`} >
                     <img className='cloud-logo-img' src="/images/logo_pcloud.png" alt="" srcset="" />
                     <p>PCloud Drive</p>
-                </button>
+                </a>
                 <button id='connectGdrive' onClick={connectClick}>
                     <img className='cloud-logo-img' src="/images/logo_gdrive.png" alt="" srcset="" />
                     <p>Google Drive</p>
