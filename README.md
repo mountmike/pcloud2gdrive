@@ -44,18 +44,23 @@ With my API routes setup, I was fetching data from my cloud file systems in Reac
 
 ![Screenshot of Folders React components](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/react_folders.png)
 
-## 3. Creating and storing a task in Firestore
-    - creating file path for origin/target
-    - building fileList
+## 3. Creating and storing a task in Firestore Database
+The reason I wanted to use Firebase in the first place was it seemed like a great way to store a long list of files, each with it's own metadata. My schema idea was to have a sub-collection called "fileList" on each "task" document and each file could be a document in this sub-collection. This worked well.
+
+Another feature I wanted was to store a file path string for both the origin and target folders - more for the UI than anything else. I thought this would be easy info to extract from the APIs but in the end the only way to achieve this was to write function that queries a folder id, grabs the folder name then recursively queries the parent folder until it reaches the root directory.
 
 ## 4. Actually running the transfer process/function
-    - easy enough to transfer 1 folder full of files but what if there's sub folders???
-        - recursive function
-        1. create folder tree on server with fs
-        2. download files from pcloud
-        3. create folder tree in gdrive
-        4. upload files to gdrive
-        5. delete the tmp folder on server
+While I was able to transfer a single folder full of files quite easily, to take on a more realistic task with a number of nested subfolders was a a whole ’nother process. 
+
+**This is where I spent most of my time on this project**
+
+In short I had to write a function that could handle all these tasks in a recursive loop based on whether or not there were folders in a directory. 
+
+    1. create folder tree on server with fs
+    2. download files from pcloud
+    3. create folder tree in gdrive
+    4. upload files to gdrive
+    5. delete the tmp folder on server
 
 ## 5. Tracking task progress while it runs
     - creating progress bar
@@ -64,7 +69,7 @@ With my API routes setup, I was fetching data from my cloud file systems in Reac
     **async ISSUES**
 
 # Future thoughts:
-- move users db to firestore
-- add task scheduling
-- build out file browser for each cloud storage from within my app
-    - CRUD folders
+    - move users db to firestore / task processing to a FAAS like Lambda?
+    - add task scheduling
+    - build out file browser for each cloud storage from within my app
+        - CRUD folders
