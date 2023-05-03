@@ -15,7 +15,9 @@ Presenting **pcloud2gdrive:** a tool for migrating data from pCloud Drive to Goo
 
 **Screenshots:** 
 
-![Animated gif of working app](https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/screenshot1.gif)
+<p align="center">
+  <img src="https://github.com/mountmike/pcloud2gdrive/blob/main/client/public/images/planning/screenshot1.gif" />
+</p>
 
 # Planning
 ### Testing the concept
