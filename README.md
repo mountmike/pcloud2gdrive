@@ -5,11 +5,12 @@ When faced with the need to migrate from one cloud storage service to another, I
 Naturally I did what any creative problem solver would do, and wasted far more time than the upload ever would have taken on building my own application that would automtate the process.
 
 Presenting **pcloud2gdrive:** a tool for migrating data from pCloud Drive to Google Drive built using:
-- REACT.js
+- REACT.js/React Router 
 - NODE.js
 - Firebase / Firestore
 - PostgreSQL
 - Google Drive/pCloud SDKs
+- Material UI/Bootstrap/Font Awesome
 
 **Live demo:**  *link coming soon*
 
@@ -57,19 +58,16 @@ While I was able to transfer a single folder full of files quite easily, to take
 In short I had to write a function that could handle all these tasks in a recursive loop based on whether or not there were folders in a directory. 
 
     1. create folder tree on server with fs
-    2. download files from pcloud
-    3. create folder tree in gdrive
-    4. upload files to gdrive
+    2. download files from Pcloud
+    3. create folder tree in Gdrive
+    4. upload files to Gdrive
     5. delete the tmp folder on server
 
 ## 5. Tracking task progress while it runs
-    - creating progress bar
-    - writing to db everytime a file is downloaded/uploaded increasing a counter.
-    - function to read count variable and convert to a %
-    **async ISSUES**
+Next up I wanted a graphical read on the progress of a running task. As I was using multiple libraries for transfering data there I couldnt easily utilise any built in methods for this and decided to build my own. I needed to count each sucessful download and upload and track the count in the database. After some reading I utilised Firestore's distributed counters function which allowed the counter to be updated more than once per second. I then built a component in **React** that would read this value, convert to a percentage based on total files and update accordingly.
 
 # Future thoughts:
-    - move users db to firestore / task processing to a FAAS like Lambda?
+    - move users db to firestore / task processing to a FAAS?
     - add task scheduling
     - build out file browser for each cloud storage from within my app
         - CRUD folders
