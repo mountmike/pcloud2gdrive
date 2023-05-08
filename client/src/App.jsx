@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage'
 import { useEffect, useState } from 'react';
 import { auth, db } from "./db/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, collection, setDoc } from "firebase/firestore";
 
 
@@ -39,7 +39,7 @@ function App() {
 
   const googleSignIn = () => {
     const provider = new GoogleAuthProvider();
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider);
   };
   const signOut = () => {
     auth.signOut();
