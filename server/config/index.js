@@ -11,7 +11,7 @@ if (missing.length > 0) {
 module.exports = {
   port: process.env.PORT,
   db: {
-    host: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL,
     user: "postgres",
     port: 5432,
     password: process.env.PG_PASSWORD,
