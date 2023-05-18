@@ -46,6 +46,8 @@ function App() {
     setUser(null)
   };
 
+  console.log(user);
+
   return (
     <div className="App">
       { user ?
