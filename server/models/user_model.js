@@ -1,13 +1,9 @@
-const db = require("../db");
+const db = require("../db/firebase");
 
 class User {
-    static getByEmail(email) {
-        return db.query(`SELECT * from users where email = $1`, [email]).then(user => user.rows)    
+    static addAccessToken(userId, token) {
+            
     }
-
-    static addNewUser(username, email, digestedPassword) {
-        return db.query('INSERT INTO users (username, email, password_digest) VALUES ($1, $2, $3)', [username, email, digestedPassword])
-    } 
 }
 
 module.exports = User
