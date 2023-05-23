@@ -5,6 +5,7 @@ const db = require("./db");
 const cors = require("cors")
 const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session);
+const path = require("path");
 
 const userController = require("./controllers/user_controller")
 const sessionController = require("./controllers/session_controller")
@@ -29,15 +30,16 @@ app.use(session({
   // Insert express-session options here
 }));
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.use("/api/user", userController)
 app.use("/api/session", sessionController)
 app.use("/api/gdrive", gDriveController)
 app.use("/api/pcloud", pCloudController)
 app.use("/api/task", taskController)
 
-app.get("/", (req, res) => {
-  res.send("we are online");
-});
 
 app.listen(config.port, () => {
   console.log(`listening on port ${config.port}`)
